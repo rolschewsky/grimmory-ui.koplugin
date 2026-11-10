@@ -3,7 +3,7 @@
 ordnet ihnen die Übersetzung zu. Die Sprache kommt aus KOReader, ohne Datei für sie gilt Englisch.
 Fehlt ein Eintrag in einer Sprache, steht er englisch da.
 
-    local _ = require("grimmory/i18n")
+    local _ = require("grimmoryui/i18n")
     _("Regal")
     _.T(_("Seite %1 von %2"), 3, 7)
     _.ngettext("%1 Buch", "%1 Bücher", n)
@@ -34,7 +34,7 @@ local PLURAL = {
 local function default(n) return n == 1 and 1 or 2 end
 
 local function load(code)
-    local ok, t = pcall(require, "grimmory/l10n/" .. code)
+    local ok, t = pcall(require, "grimmoryui/l10n/" .. code)
     if ok and type(t) == "table" then return t end
 end
 

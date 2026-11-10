@@ -1,14 +1,14 @@
 -- Selbsttest der reinen Logik ohne KOReader. Aufruf aus dem Repo-Ordner:
 --   luajit tests/test_logic.lua   (auf dem Kindle: /mnt/us/koreader/luajit …)
-package.path = "grimmory.koplugin/?.lua;" .. package.path
+package.path = "grimmory-ui.koplugin/?.lua;" .. package.path
 for _, name in ipairs{ "json", "socket.http", "ssl.https", "libs/libkoreader-lfs", "ltn12",
         "socket", "socketutil", "logger" } do
     package.preload[name] = function() return {} end
 end
 
-local api = require("grimmory/api")
-local lib = require("grimmory/library")
-local version = require("grimmory/version")
+local api = require("grimmoryui/api")
+local lib = require("grimmoryui/library")
+local version = require("grimmoryui/version")
 
 -- Hostnamen im Zertifikat
 assert(api.hostMatches("grimmory.example.com", "GRIMMORY.example.com"))
@@ -137,14 +137,16 @@ assert(version.newer("1.2.0", "1.2.0-beta1"))
 assert(not version.newer("kaputt", "1.0.0"))
 
 -- Release-Zip auswählen
-local updater = require("grimmory/updater")
-assert(updater.pickAsset({ assets = { { name = "notes.txt" }, { name = "grimmory.koplugin-v1.2.0.zip" } } }).name
-    == "grimmory.koplugin-v1.2.0.zip")
+local updater = require("grimmoryui/updater")
+assert(updater.pickAsset({ assets = { { name = "notes.txt" }, { name = "grimmory-ui.koplugin-v1.2.0.zip" } } }).name
+    == "grimmory-ui.koplugin-v1.2.0.zip")
 assert(updater.pickAsset({ assets = { { name = "other.koplugin.zip" } } }) == nil)
+-- Das Zip von Grimmory Sync (Ordner grimmory.koplugin) darf nie als Update gelten
+assert(updater.pickAsset({ assets = { { name = "grimmory.koplugin-v1.2.0.zip" } } }) == nil)
 assert(updater.pickAsset(nil) == nil)
 
 -- Bitte um einen Stern: erst nach dem dritten gelesenen Buch, „Später“ nur einmal
-local rating = require("grimmory/rating")
+local rating = require("grimmoryui/rating")
 local st = {}
 assert(rating.record(st, 1) and not rating.record(st, 1))
 assert(rating.record(st, 2))

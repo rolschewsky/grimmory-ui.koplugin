@@ -205,7 +205,7 @@ return {
     ["Antwort von GitHub ist kein JSON"] = "Respons GitHub bukan JSON",
     ["Zu viele Weiterleitungen"] = "Terlalu banyak pengalihan",
     ["Zip nicht lesbar: %1"] = "Zip tidak dapat dibaca: %1",
-    ["Zip enthält keinen Ordner grimmory.koplugin"] = "Zip tidak berisi folder grimmory.koplugin",
+    ["Zip enthält keinen Ordner %1"] = "Zip tidak berisi folder %1",
     ["Plugin-Ordner nicht beschreibbar"] = "Folder plugin tidak dapat ditulis",
     ["Neue Version konnte nicht abgelegt werden"] = "Versi baru tidak dapat dipasang",
 

@@ -197,7 +197,7 @@ return {
     ["Antwort von GitHub ist kein JSON"] = "Odpowiedź GitHub nie jest w formacie JSON",
     ["Zu viele Weiterleitungen"] = "Zbyt wiele przekierowań",
     ["Zip nicht lesbar: %1"] = "Nie można odczytać pliku zip: %1",
-    ["Zip enthält keinen Ordner grimmory.koplugin"] = "Zip nie zawiera folderu grimmory.koplugin",
+    ["Zip enthält keinen Ordner %1"] = "Zip nie zawiera folderu %1",
     ["Plugin-Ordner nicht beschreibbar"] = "Nie można zapisywać w folderze wtyczki",
     ["Neue Version konnte nicht abgelegt werden"] = "Nie udało się zainstalować nowej wersji",
 

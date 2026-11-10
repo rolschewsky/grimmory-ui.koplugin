@@ -1,6 +1,6 @@
-local _ = require("grimmory/i18n")
+local _ = require("grimmoryui/i18n")
 return {
     fullname = "Grimmory",
     description = _("Bibliothek aus Grimmory: stöbern, herunterladen und mit KOReader lesen."),
-    version = "1.0.0",
+    version = "1.0.1",
 }

@@ -197,7 +197,7 @@ return {
     ["Antwort von GitHub ist kein JSON"] = "Η απόκριση του GitHub δεν είναι JSON",
     ["Zu viele Weiterleitungen"] = "Πάρα πολλές ανακατευθύνσεις",
     ["Zip nicht lesbar: %1"] = "Το zip δεν είναι αναγνώσιμο: %1",
-    ["Zip enthält keinen Ordner grimmory.koplugin"] = "Το zip δεν περιέχει φάκελο grimmory.koplugin",
+    ["Zip enthält keinen Ordner %1"] = "Το zip δεν περιέχει φάκελο %1",
     ["Plugin-Ordner nicht beschreibbar"] = "Ο φάκελος του πρόσθετου δεν είναι εγγράψιμος",
     ["Neue Version konnte nicht abgelegt werden"] = "Δεν ήταν δυνατή η εγκατάσταση της νέας έκδοσης",
 

@@ -18,9 +18,9 @@ local InputDialog = require("ui/widget/inputdialog")
 local OverlapGroup = require("ui/widget/overlapgroup")
 local UIManager = require("ui/uimanager")
 local VerticalGroup = require("ui/widget/verticalgroup")
-local lib = require("grimmory/library")
-local UI = require("grimmory/ui")
-local _ = require("grimmory/i18n")
+local lib = require("grimmoryui/library")
+local UI = require("grimmoryui/ui")
+local _ = require("grimmoryui/i18n")
 local N_, T = _.ngettext, _.T
 
 local App = InputContainer:extend{
@@ -169,7 +169,7 @@ function App:render(refresh)
     }
     if self.rating_box then
         -- Unten rechts über dem Inhalt, 32 px über der Leiste, der weiße Saum ragt darüber hinaus.
-        local RatingUI = require("grimmory/ratingui")
+        local RatingUI = require("grimmoryui/ratingui")
         local box = RatingUI.box(function(choice) self:answerRating(choice) end)
         local size, ring = box:getSize(), UI.px(RatingUI.RING)
         box.overlap_offset = { UI.width() - UI.px(32) + ring - size.w,
@@ -191,7 +191,7 @@ function App:answerRating(choice)
     self.rating_box = false
     self.plugin:answerRating(choice)
     self:render("ui")
-    if choice == "rate" then require("grimmory/ratingui").showQR() end
+    if choice == "rate" then require("grimmoryui/ratingui").showQR() end
 end
 
 function App:setTab(id)

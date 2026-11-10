@@ -30,7 +30,7 @@ local VerticalSpan = require("ui/widget/verticalspan")
 local Widget = require("ui/widget/widget")
 local WidgetContainer = require("ui/widget/container/widgetcontainer")
 local lfs = require("libs/libkoreader-lfs")
-local _ = require("grimmory/i18n")
+local _ = require("grimmoryui/i18n")
 
 local Screen = Device.screen
 

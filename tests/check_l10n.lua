@@ -1,7 +1,7 @@
 -- Prüft die Übersetzungen gegen die englische Datei, die alle Schlüssel enthält: fehlende und
 -- überzählige Einträge, Platzhalter %1 … und die Zahl der Pluralformen. Aufruf aus dem Repo-Ordner:
 --   luajit tests/check_l10n.lua
-local dir = "grimmory.koplugin/grimmory/l10n/"
+local dir = "grimmory-ui.koplugin/grimmoryui/l10n/"
 local FORMS = { pl = 3, ro = 3, ja = 1, zh_CN = 1, id = 1 }
 local DATE = "[aAbBdeHIjmMpyY]"
 

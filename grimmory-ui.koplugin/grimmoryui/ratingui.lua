@@ -1,6 +1,6 @@
 --[[--
 Oberfläche der Bitte um einen Stern: das Kästchen unten rechts und der Dialog mit dem QR-Code.
-Wann das Kästchen erscheint, entscheidet grimmory/rating.
+Wann das Kästchen erscheint, entscheidet grimmoryui/rating.
 ]]
 
 local CenterContainer = require("ui/widget/container/centercontainer")
@@ -13,9 +13,9 @@ local InputContainer = require("ui/widget/container/inputcontainer")
 local QRWidget = require("ui/widget/qrwidget")
 local UIManager = require("ui/uimanager")
 local VerticalGroup = require("ui/widget/verticalgroup")
-local rating = require("grimmory/rating")
-local UI = require("grimmory/ui")
-local _ = require("grimmory/i18n")
+local rating = require("grimmoryui/rating")
+local UI = require("grimmoryui/ui")
+local _ = require("grimmoryui/i18n")
 
 local M = {}
 

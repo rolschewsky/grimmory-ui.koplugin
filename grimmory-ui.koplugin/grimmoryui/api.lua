@@ -14,7 +14,7 @@ local http = require("socket.http")
 local ltn12 = require("ltn12")
 local socket = require("socket")
 local socketutil = require("socketutil")
-local _ = require("grimmory/i18n")
+local _ = require("grimmoryui/i18n")
 
 -- Relativ zum Arbeitsverzeichnis von KOReader.
 local CAFILE = "data/ca-bundle.crt"

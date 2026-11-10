@@ -205,7 +205,7 @@ return {
     ["Antwort von GitHub ist kein JSON"] = "GitHubの応答がJSONではありません",
     ["Zu viele Weiterleitungen"] = "リダイレクトが多すぎます",
     ["Zip nicht lesbar: %1"] = "zipを読み込めません：%1",
-    ["Zip enthält keinen Ordner grimmory.koplugin"] = "zipにgrimmory.kopluginフォルダーがありません",
+    ["Zip enthält keinen Ordner %1"] = "zipに%1フォルダーがありません",
     ["Plugin-Ordner nicht beschreibbar"] = "プラグインフォルダーに書き込めません",
     ["Neue Version konnte nicht abgelegt werden"] = "新しいバージョンをインストールできませんでした",
 

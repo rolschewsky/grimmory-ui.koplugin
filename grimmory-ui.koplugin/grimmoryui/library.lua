@@ -1,7 +1,7 @@
 --[[--
 Lokales Abbild der Grimmory-Bibliothek: Abgleich mit dem Server und Abfragen für die Oberfläche.
 
-Auf dem Gerät liegt alles unter <Datenordner>/grimmory/:
+Auf dem Gerät liegt alles unter <Datenordner>/grimmory-ui/:
 - library.json: Bücher und Reihen vom letzten Abgleich, dazu welches Buch wo heruntergeladen liegt.
 - thumbs/<id>.jpg: kleine Cover. Neu geladen wird nur, wenn sich `coverUpdatedOn` ändert.
 
@@ -9,7 +9,7 @@ Die Abfragefunktionen arbeiten nur auf Tabellen und lassen sich ohne KOReader te
 ]]
 
 local JSON = require("json")
-local _ = require("grimmory/i18n")
+local _ = require("grimmoryui/i18n")
 
 local M = {}
 

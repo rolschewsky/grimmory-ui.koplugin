@@ -11,7 +11,7 @@ Der Zustand ist eine Tabelle in den Einstellungen: finished (gezählte Buch-IDs)
 
 local M = {}
 
-M.REPO_URL = "https://github.com/rolschewsky/koreader-grimmory-plugin"
+M.REPO_URL = "https://github.com/rolschewsky/grimmory-ui.koplugin"
 M.AFTER_BOOKS = 3
 M.SNOOZE = 30 * 86400
 

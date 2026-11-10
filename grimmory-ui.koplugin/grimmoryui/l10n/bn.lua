@@ -208,7 +208,7 @@ return {
     ["Antwort von GitHub ist kein JSON"] = "GitHub-এর উত্তর JSON নয়",
     ["Zu viele Weiterleitungen"] = "অত্যধিক রিডাইরেক্ট",
     ["Zip nicht lesbar: %1"] = "Zip পড়া যাচ্ছে না: %1",
-    ["Zip enthält keinen Ordner grimmory.koplugin"] = "Zip-এ grimmory.koplugin ফোল্ডার নেই",
+    ["Zip enthält keinen Ordner %1"] = "Zip-এ %1 ফোল্ডার নেই",
     ["Plugin-Ordner nicht beschreibbar"] = "প্লাগইন ফোল্ডারে লেখা যাচ্ছে না",
     ["Neue Version konnte nicht abgelegt werden"] = "নতুন সংস্করণ ইনস্টল করা যায়নি",
 

@@ -1,8 +1,8 @@
 name: Build
 
 # Jeder Push auf master und jeder Pull Request lässt die Tests laufen, ihr Ergebnis zeigt das
-# Badge im README. Ein Tag wie v1.0.0 baut zusätzlich grimmory.koplugin-v1.0.0.zip und legt damit
-# ein GitHub-Release an. Das Zip enthält den Ordner grimmory.koplugin/, so wie ihn der AppStore
+# Badge im README. Ein Tag wie v1.0.0 baut zusätzlich grimmory-ui.koplugin-v1.0.0.zip und legt damit
+# ein GitHub-Release an. Das Zip enthält den Ordner grimmory-ui.koplugin/, so wie ihn der AppStore
 # und das Selbst-Update in koreader/plugins/ auspacken.
 
 on:
@@ -35,14 +35,14 @@ jobs:
       - name: Version in _meta.lua prüfen
         run: |
           version="${GITHUB_REF_NAME#v}"
-          grep -q "version = \"$version\"" grimmory.koplugin/_meta.lua \
+          grep -q "version = \"$version\"" grimmory-ui.koplugin/_meta.lua \
             || { echo "_meta.lua nennt nicht Version $version"; exit 1; }
       # Die Lizenz kommt mit in den Plugin-Ordner, so liegt sie auch auf jedem Gerät.
       - name: Zip bauen
         run: |
-          cp LICENSE grimmory.koplugin/
-          zip -r "grimmory.koplugin-${GITHUB_REF_NAME}.zip" grimmory.koplugin
+          cp LICENSE grimmory-ui.koplugin/
+          zip -r "grimmory-ui.koplugin-${GITHUB_REF_NAME}.zip" grimmory-ui.koplugin
       - name: Release anlegen
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" "grimmory.koplugin-${GITHUB_REF_NAME}.zip" --generate-notes
+        run: gh release create "$GITHUB_REF_NAME" "grimmory-ui.koplugin-${GITHUB_REF_NAME}.zip" --generate-notes

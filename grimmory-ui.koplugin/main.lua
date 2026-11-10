@@ -3,7 +3,9 @@ Grimmory für KOReader: zeigt die Bibliothek eines Grimmory-Servers, lädt Büch
 öffnet sie im Reader von KOReader. Auf Wunsch erscheint das Plugin beim Start statt des
 Dateimanagers und nach dem Lesen wieder.
 
-Einstellungen in koreader/settings/grimmory.lua, Daten in <Datenordner>/grimmory/.
+Einstellungen in koreader/settings/grimmory-ui.lua, Daten in <Datenordner>/grimmory-ui/. Der Name
+„grimmory“ gehört dem offiziellen Plugin Grimmory Sync, bis Version 1.0.0 lag dieses Plugin auch
+dort und wird beim ersten Start übernommen.
 ]]
 
 local BookList = require("ui/widget/booklist")
@@ -21,10 +23,10 @@ local lfs = require("libs/libkoreader-lfs")
 local logger = require("logger")
 local util = require("util")
 
-local api = require("grimmory/api")
-local library = require("grimmory/library")
-local rating = require("grimmory/rating")
-local _ = require("grimmory/i18n")
+local api = require("grimmoryui/api")
+local library = require("grimmoryui/library")
+local rating = require("grimmoryui/rating")
+local _ = require("grimmoryui/i18n")
 local N_, T = _.ngettext, _.T
 
 local DEFAULTS = {
@@ -48,14 +50,36 @@ local DEFAULTS = {
 -- und jeden Reader neu an, das Modul selbst bleibt aber geladen.
 local session = { started = false, reopen = false, last_book = nil, just_finished = false }
 
+local NAME = "grimmory-ui"
+
+--- Einstellungen und Daten aus der Zeit, als das Plugin noch „grimmory“ hieß, übernehmen. Nur wenn
+--- dort unsere library.json liegt: Grimmory Sync nutzt denselben Namen, seine Dateien bleiben unberührt.
+local function adoptOldNames(settings_file, data_dir)
+    local old_dir = DataStorage:getFullDataDir() .. "/grimmory"
+    if lfs.attributes(data_dir, "mode") or lfs.attributes(old_dir .. "/library.json", "mode") ~= "file" then return end
+    util.makePath(data_dir)
+    os.rename(old_dir .. "/library.json", data_dir .. "/library.json")
+    os.rename(old_dir .. "/thumbs", data_dir .. "/thumbs")
+    local old_settings = DataStorage:getSettingsDir() .. "/grimmory.lua"
+    if not lfs.attributes(settings_file, "mode") and lfs.attributes(old_settings, "mode") == "file" then
+        local src = io.open(old_settings, "rb")
+        local dst = src and io.open(settings_file, "wb")
+        if dst then dst:write(src:read("*a")); dst:close() end
+        if src then src:close() end
+    end
+    logger.info("Grimmory: Einstellungen und Daten von „grimmory“ übernommen")
+end
+
 local Grimmory = WidgetContainer:extend{
-    name = "grimmory",
+    name = NAME,
     is_doc_only = false,
 }
 
 function Grimmory:init()
-    self.settings = LuaSettings:open(DataStorage:getSettingsDir() .. "/grimmory.lua")
-    self.dir = DataStorage:getFullDataDir() .. "/grimmory"
+    local settings_file = DataStorage:getSettingsDir() .. "/" .. NAME .. ".lua"
+    self.dir = DataStorage:getFullDataDir() .. "/" .. NAME
+    adoptOldNames(settings_file, self.dir)
+    self.settings = LuaSettings:open(settings_file)
     util.makePath(self.dir .. "/thumbs")
     self.data = library.load(self.dir)
     self.data.details = self.data.details or {}
@@ -75,19 +99,19 @@ function Grimmory:init()
 end
 
 function Grimmory:onDispatcherRegisterActions()
-    Dispatcher:registerAction("grimmory_show", {
-        category = "none", event = "ShowGrimmory", title = _("Grimmory öffnen"),
+    Dispatcher:registerAction("grimmory_ui_show", {
+        category = "none", event = "ShowGrimmoryUI", title = _("Grimmory öffnen"),
         filemanager = true, reader = true,
     })
 end
 
-function Grimmory:onShowGrimmory()
+function Grimmory:onShowGrimmoryUI()
     self:showApp()
     return true
 end
 
 function Grimmory:addToMainMenu(menu_items)
-    menu_items.grimmory = {
+    menu_items.grimmory_ui = {
         text = "Grimmory",
         sorting_hint = "tools",
         callback = function() self:showApp() end,
@@ -438,7 +462,7 @@ end
 
 function Grimmory:showApp()
     if self.app then return end
-    local App = require("grimmory/app")
+    local App = require("grimmoryui/app")
     self.app = App:new{ plugin = self }
     UIManager:show(self.app)
     local just_finished = session.just_finished
@@ -458,7 +482,7 @@ function Grimmory:closeApp()
 end
 
 function Grimmory:showMenu()
-    local Menu = require("grimmory/menu")
+    local Menu = require("grimmoryui/menu")
     self.menu = Menu:new{ plugin = self }
     UIManager:show(self.menu)
 end
@@ -472,7 +496,7 @@ end
 
 function Grimmory:showSettings()
     self:closeMenu()
-    local Settings = require("grimmory/settings")
+    local Settings = require("grimmoryui/settings")
     UIManager:show(Settings:new{ plugin = self })
 end
 
@@ -513,7 +537,7 @@ end
 
 function Grimmory:showRatingQR()
     self:closeMenu()
-    require("grimmory/ratingui").showQR()
+    require("grimmoryui/ratingui").showQR()
 end
 
 -- Über und Selbst-Update ---------------------------------------------------------------------
@@ -536,7 +560,7 @@ function Grimmory:showAbout()
 end
 
 function Grimmory:checkUpdate(repo, version)
-    local updater = require("grimmory/updater")
+    local updater = require("grimmoryui/updater")
     NetworkMgr:runWhenConnected(function()
         local release, err = updater.check(repo, version)
         if not release then

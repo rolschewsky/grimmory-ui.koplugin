@@ -1,8 +1,8 @@
 # Grimmory for KOReader
 
-[![Release](https://img.shields.io/github/v/release/rolschewsky/koreader-grimmory-plugin)](https://github.com/rolschewsky/koreader-grimmory-plugin/releases/latest)
-[![License](https://img.shields.io/github/license/rolschewsky/koreader-grimmory-plugin)](LICENSE)
-[![Build](https://github.com/rolschewsky/koreader-grimmory-plugin/actions/workflows/release.yml/badge.svg?branch=master)](https://github.com/rolschewsky/koreader-grimmory-plugin/actions/workflows/release.yml)
+[![Release](https://img.shields.io/github/v/release/rolschewsky/grimmory-ui.koplugin)](https://github.com/rolschewsky/grimmory-ui.koplugin/releases/latest)
+[![License](https://img.shields.io/github/license/rolschewsky/grimmory-ui.koplugin)](LICENSE)
+[![Build](https://github.com/rolschewsky/grimmory-ui.koplugin/actions/workflows/release.yml/badge.svg?branch=master)](https://github.com/rolschewsky/grimmory-ui.koplugin/actions/workflows/release.yml)
 [![KOReader plugin](https://img.shields.io/badge/KOReader-plugin-informational)](https://koreader.rocks)
 [![Languages](https://img.shields.io/badge/languages-15-blue)](#translations)
 
@@ -54,15 +54,24 @@ device and sends nothing.
 
 ## Installation
 
-**With the AppStore:** install [appstore.koplugin](https://github.com/omer-faruq/appstore.koplugin),
-search for "grimmory" and install. Updates come the same way.
+**With Storefront or the AppStore:** install
+[Storefront](https://github.com/ultimatejimmy/storefront.koplugin) or
+[appstore.koplugin](https://github.com/omer-faruq/appstore.koplugin), search for "grimmory-ui" and
+install. Updates come the same way.
 
-**By hand:** download `grimmory.koplugin-vX.Y.Z.zip` from the
-[releases](../../releases), copy the folder `grimmory.koplugin` into `koreader/plugins/` on your
+**By hand:** download `grimmory-ui.koplugin-vX.Y.Z.zip` from the
+[releases](../../releases), copy the folder `grimmory-ui.koplugin` into `koreader/plugins/` on your
 device and restart KOReader.
 
-The plugin can also update itself without a computer: enter this repository under
-Settings › Updates and use Menu › About Grimmory.
+The plugin can also update itself without a computer: enter `rolschewsky/grimmory-ui.koplugin`
+under Settings › Updates and use Menu › About Grimmory.
+
+This plugin is not [Grimmory Sync](https://github.com/grimmory-tools/grimmory.koplugin), the
+official plugin that syncs reading progress. Both can be installed side by side.
+
+**Coming from version 1.0.0?** It was installed as `grimmory.koplugin`. Delete that folder from
+`koreader/plugins/` after installing this one; your settings and library are taken over on the
+first start.
 
 ## Setup
 
@@ -96,7 +105,7 @@ Tools › Grimmory or with a gesture bound to the action **Open Grimmory**.
 
 - Every HTTPS connection verifies the certificate chain against KOReader's CA bundle and checks
   the host name. KOReader itself does neither for plugin requests.
-- Password, tokens and header values are stored only in `koreader/settings/grimmory.lua` on the
+- Password, tokens and header values are stored only in `koreader/settings/grimmory-ui.lua` on the
   device and never written to a log. They are not encrypted there, so give the e-reader its own
   account with only the permissions above, and revoke that account and any proxy key if the
   device gets lost.
@@ -112,13 +121,13 @@ Tools › Grimmory or with a gesture bound to the action **Open Grimmory**.
 
 ## Translations
 
-Texts live in `grimmory.koplugin/grimmory/l10n/<language>.lua`. The keys are the German texts from
+Texts live in `grimmory-ui.koplugin/grimmoryui/l10n/<language>.lua`. The keys are the German texts from
 the code, `en.lua` holds every key with its English text. To add or improve a language:
 
 1. Copy `en.lua` to the KOReader language code, for example `sv.lua` or `pt_BR.lua`.
 2. Translate the values. Keep `%1`, `%2` … (their order may change). Plural entries are lists with
    one form per plural category of the language; if it needs a rule other than "one / other",
-   add it to `PLURAL` in `grimmory/i18n.lua`.
+   add it to `PLURAL` in `grimmoryui/i18n.lua`.
 3. Run the checks below and open a pull request.
 
 ## Development
@@ -131,8 +140,8 @@ luajit tests/check_l10n.lua   # every language: complete, placeholders, plural f
 On a Kindle, `luajit` is in `/mnt/us/koreader/`.
 
 A release is made by pushing a tag `vX.Y.Z`. The version must already be in
-`grimmory.koplugin/_meta.lua`. The workflow runs the tests, builds
-`grimmory.koplugin-vX.Y.Z.zip` and creates the GitHub release.
+`grimmory-ui.koplugin/_meta.lua`. The workflow runs the tests, builds
+`grimmory-ui.koplugin-vX.Y.Z.zip` and creates the GitHub release.
 
 ## License
 

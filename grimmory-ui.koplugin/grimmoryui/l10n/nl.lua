@@ -197,7 +197,7 @@ return {
     ["Antwort von GitHub ist kein JSON"] = "Antwoord van GitHub is geen JSON",
     ["Zu viele Weiterleitungen"] = "Te veel omleidingen",
     ["Zip nicht lesbar: %1"] = "Zip niet leesbaar: %1",
-    ["Zip enthält keinen Ordner grimmory.koplugin"] = "Zip bevat geen map grimmory.koplugin",
+    ["Zip enthält keinen Ordner %1"] = "Zip bevat geen map %1",
     ["Plugin-Ordner nicht beschreibbar"] = "Plug-inmap niet schrijfbaar",
     ["Neue Version konnte nicht abgelegt werden"] = "Nieuwe versie kon niet worden geïnstalleerd",
 

@@ -1,27 +1,29 @@
 --[[--
 Selbst-Update über GitHub-Releases, ohne Rechner.
 
-Ein Release trägt ein Zip `grimmory.koplugin-vX.Y.Z.zip`, das den Ordner `grimmory.koplugin/`
+Ein Release trägt ein Zip `grimmory-ui.koplugin-vX.Y.Z.zip`, das den Ordner `grimmory-ui.koplugin/`
 enthält. Das Update lädt es herunter, packt es neben den Plugin-Ordner aus und tauscht den Ordner
 erst danach aus. Bricht etwas ab, bleibt die alte Version unberührt.
 ]]
 
 local JSON = require("json")
-local api = require("grimmory/api")
-local version = require("grimmory/version")
-local _ = require("grimmory/i18n")
+local api = require("grimmoryui/api")
+local version = require("grimmoryui/version")
+local _ = require("grimmoryui/i18n")
 
 local M = {}
 
+local FOLDER = "grimmory-ui.koplugin"
+
 local HEADERS = {
     ["Accept"] = "application/vnd.github+json",
-    ["User-Agent"] = "grimmory.koplugin",
+    ["User-Agent"] = FOLDER,
 }
 
 --- Das passende Zip aus einem Release, oder nil.
 function M.pickAsset(release)
     for _, asset in ipairs(type(release) == "table" and release.assets or {}) do
-        if (asset.name or ""):match("^grimmory%.koplugin.*%.zip$") then return asset end
+        if (asset.name or ""):match("^grimmory%-ui%.koplugin.*%.zip$") then return asset end
     end
     return nil
 end
@@ -59,7 +61,7 @@ function M.download(url, file)
 end
 
 --- Lädt das Release-Zip, packt es in einen Nachbarordner aus und tauscht dann den Plugin-Ordner.
---- `plugin_path` ist der Ordner grimmory.koplugin, `work_dir` ein beschreibbarer Arbeitsordner.
+--- `plugin_path` ist der Ordner grimmory-ui.koplugin, `work_dir` ein beschreibbarer Arbeitsordner.
 function M.install(url, plugin_path, work_dir)
     local Archiver = require("ffi/archiver")
     local ffiUtil = require("ffi/util")
@@ -71,7 +73,7 @@ function M.install(url, plugin_path, work_dir)
     if not ok then return nil, err end
 
     local parent = ffiUtil.dirname(plugin_path)
-    local staging = parent .. "/.grimmory-update"
+    local staging = parent .. "/.grimmory-ui-update"
     if lfs.attributes(staging, "mode") then ffiUtil.purgeDir(staging) end
     util.makePath(staging)
 
@@ -90,15 +92,15 @@ function M.install(url, plugin_path, work_dir)
     err = arc.err
     arc:close()
     os.remove(zip)
-    local fresh = staging .. "/grimmory.koplugin"
+    local fresh = staging .. "/" .. FOLDER
     if err or lfs.attributes(fresh .. "/main.lua", "mode") ~= "file" then
         ffiUtil.purgeDir(staging)
-        return nil, err or _("Zip enthält keinen Ordner grimmory.koplugin")
+        return nil, err or _.T(_("Zip enthält keinen Ordner %1"), FOLDER)
     end
 
     -- Erst die alte Version beiseitelegen, dann die neue an ihren Platz. Geht das schief, kommt die
     -- alte zurück.
-    local old = parent .. "/.grimmory-old"
+    local old = parent .. "/.grimmory-ui-old"
     if lfs.attributes(old, "mode") then ffiUtil.purgeDir(old) end
     if not os.rename(plugin_path, old) then
         ffiUtil.purgeDir(staging)

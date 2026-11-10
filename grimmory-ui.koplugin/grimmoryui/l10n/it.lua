@@ -208,7 +208,7 @@ return {
     ["Antwort von GitHub ist kein JSON"] = "La risposta di GitHub non è JSON",
     ["Zu viele Weiterleitungen"] = "Troppi reindirizzamenti",
     ["Zip nicht lesbar: %1"] = "Impossibile leggere lo zip: %1",
-    ["Zip enthält keinen Ordner grimmory.koplugin"] = "Lo zip non contiene la cartella grimmory.koplugin",
+    ["Zip enthält keinen Ordner %1"] = "Lo zip non contiene la cartella %1",
     ["Plugin-Ordner nicht beschreibbar"] = "Cartella del plugin non scrivibile",
     ["Neue Version konnte nicht abgelegt werden"] = "Impossibile installare la nuova versione",
 

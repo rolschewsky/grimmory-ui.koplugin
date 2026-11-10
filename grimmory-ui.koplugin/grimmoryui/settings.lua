@@ -16,9 +16,9 @@ local MultiInputDialog = require("ui/widget/multiinputdialog")
 local NetworkMgr = require("ui/network/manager")
 local UIManager = require("ui/uimanager")
 local VerticalGroup = require("ui/widget/verticalgroup")
-local api = require("grimmory/api")
-local UI = require("grimmory/ui")
-local _ = require("grimmory/i18n")
+local api = require("grimmoryui/api")
+local UI = require("grimmoryui/ui")
+local _ = require("grimmoryui/i18n")
 local N_, T = _.ngettext, _.T
 
 local Settings = InputContainer:extend{

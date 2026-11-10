@@ -205,7 +205,7 @@ return {
     ["Antwort von GitHub ist kein JSON"] = "GitHub 的响应不是 JSON",
     ["Zu viele Weiterleitungen"] = "重定向次数过多",
     ["Zip nicht lesbar: %1"] = "无法读取 zip：%1",
-    ["Zip enthält keinen Ordner grimmory.koplugin"] = "zip 中没有 grimmory.koplugin 文件夹",
+    ["Zip enthält keinen Ordner %1"] = "zip 中没有 %1 文件夹",
     ["Plugin-Ordner nicht beschreibbar"] = "插件文件夹不可写",
     ["Neue Version konnte nicht abgelegt werden"] = "无法安装新版本",
 

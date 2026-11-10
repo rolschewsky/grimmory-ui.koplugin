@@ -197,7 +197,7 @@ return {
     ["Antwort von GitHub ist kein JSON"] = "Răspunsul de la GitHub nu este JSON",
     ["Zu viele Weiterleitungen"] = "Prea multe redirecționări",
     ["Zip nicht lesbar: %1"] = "Arhiva zip nu poate fi citită: %1",
-    ["Zip enthält keinen Ordner grimmory.koplugin"] = "Arhiva zip nu conține folderul grimmory.koplugin",
+    ["Zip enthält keinen Ordner %1"] = "Arhiva zip nu conține folderul %1",
     ["Plugin-Ordner nicht beschreibbar"] = "Folderul pluginului nu poate fi scris",
     ["Neue Version konnte nicht abgelegt werden"] = "Noua versiune nu a putut fi instalată",
 

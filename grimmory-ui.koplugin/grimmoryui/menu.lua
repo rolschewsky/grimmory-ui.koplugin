@@ -10,9 +10,9 @@ local HorizontalGroup = require("ui/widget/horizontalgroup")
 local InputContainer = require("ui/widget/container/inputcontainer")
 local NetworkMgr = require("ui/network/manager")
 local VerticalGroup = require("ui/widget/verticalgroup")
-local lib = require("grimmory/library")
-local UI = require("grimmory/ui")
-local _ = require("grimmory/i18n")
+local lib = require("grimmoryui/library")
+local UI = require("grimmoryui/ui")
+local _ = require("grimmoryui/i18n")
 local N_, T = _.ngettext, _.T
 
 local Menu = InputContainer:extend{

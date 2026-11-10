@@ -1,0 +1,140 @@
+# Grimmory for KOReader
+
+[![Release](https://img.shields.io/github/v/release/rolschewsky/koreader-grimmory-plugin)](https://github.com/rolschewsky/koreader-grimmory-plugin/releases/latest)
+[![License](https://img.shields.io/github/license/rolschewsky/koreader-grimmory-plugin)](LICENSE)
+[![Build](https://github.com/rolschewsky/koreader-grimmory-plugin/actions/workflows/release.yml/badge.svg?branch=master)](https://github.com/rolschewsky/koreader-grimmory-plugin/actions/workflows/release.yml)
+[![KOReader plugin](https://img.shields.io/badge/KOReader-plugin-informational)](https://koreader.rocks)
+[![Languages](https://img.shields.io/badge/languages-15-blue)](#translations)
+
+Your [Grimmory](https://github.com/grimmory-tools/grimmory) library on your e-reader. This
+[KOReader](https://koreader.rocks) plugin turns a Kindle or Kobo into a window onto your self-hosted
+ebook server: browse your series, discover something random, search the whole collection, tap a
+book, and it downloads and opens in KOReader. When you close the book, you are back in your library.
+
+It is built for E-Ink from the ground up: pages instead of scrolling, large tap targets, no
+animations, black and white with 16 shades of grey, and the same physical size on every screen,
+from a 2009 Kindle 2 to a Kobo Libra Colour.
+
+| <img src="docs/screenshots/home.png" alt="Home screen with a greeting, continue reading, random and recently added books"> | <img src="docs/screenshots/series.png" alt="Series list with the reading state of every volume"> | <img src="docs/screenshots/browse.png" alt="Browse with a random series, a random book with its blurb and genre tabs"> |
+|:-:|:-:|:-:|
+| **Home** · pick up where you left off | **Series** · every volume at a glance | **Browse** · let chance choose |
+| <img src="docs/screenshots/shelf-kobo.png" alt="Shelf on a Kobo Libra Colour with colour covers and reading badges"> | <img src="docs/screenshots/search.png" alt="Search list with reading state and download size"> | <img src="docs/screenshots/book.png" alt="Book page with details, download button and blurb"> |
+| **Shelf** · in colour on Kobo | **Search** · title, author, series | **Book** · tap to download and read |
+
+## What you get
+
+| Section | What it shows |
+|---|---|
+| **Home** | A greeting for the time of day, your server and when it last synced. Continue reading, four random books, the four most recently added. |
+| **Series** | Every series with its reading state per volume (read, in progress, unread, missing from Grimmory); long series become a progress bar. |
+| **Browse** | A random series, a random book with its blurb, and three random genres as tabs. Shuffle for new picks. |
+| **Shelf** | The whole library as a cover grid, filterable by genre. |
+| **Search** | Title, author and series search with filters for in progress, unread, read and on this device. |
+
+From the menu you can sync, see what is stored on the device and free up space book by book,
+open the settings, check for updates, show a QR code to star the project on GitHub, or go back
+to KOReader's file manager. After your third book read through the plugin, a small box in the
+corner asks once for a star; "Later" asks one more time after 30 days. It only counts on the
+device and sends nothing.
+
+- **One tap to read.** Books download on demand and open in KOReader's reader. Missing volumes of a
+  series download in one go.
+- **Reading state both ways.** Progress from KOReader is reported back to Grimmory, so your other
+  devices and the web app know where you are.
+- **Opens instead of the file manager.** Optional: the plugin becomes your home screen when
+  KOReader starts and after you close a book.
+- **Works behind a reverse proxy.** Add any number of extra headers (an API key for your proxy,
+  for example), sent with every request.
+- **Keeps the device tidy.** Finished books can be removed automatically after a number of days.
+- **15 languages.** English, German, French, Spanish, Italian, Portuguese, Polish, Romanian, Dutch,
+  Greek, Simplified Chinese, Japanese, Hindi, Bengali and Indonesian. The plugin follows
+  KOReader's language setting and falls back to English.
+
+<p align="center"><img src="docs/screenshots/languages.png" alt="The home screen in German, French, Greek, Hindi, Japanese and Chinese"></p>
+
+## Installation
+
+**With the AppStore:** install [appstore.koplugin](https://github.com/omer-faruq/appstore.koplugin),
+search for "grimmory" and install. Updates come the same way.
+
+**By hand:** download `grimmory.koplugin-vX.Y.Z.zip` from the
+[releases](../../releases), copy the folder `grimmory.koplugin` into `koreader/plugins/` on your
+device and restart KOReader.
+
+The plugin can also update itself without a computer: enter this repository under
+Settings › Updates and use Menu › About Grimmory.
+
+## Setup
+
+Open the menu at the top left, then **Settings**:
+
+- **Server:** address (for example `https://grimmory.example.com`), user and password.
+- **Extra headers:** sent with every request, for example a key for a reverse proxy in front of
+  Grimmory.
+- **Test** signs in and fetches the book list, so you see right away whether everything works.
+- **Sync:** automatically on open when the last sync is older than 30 minutes, report reading
+  status to Grimmory, preload covers.
+- **Formats:** only books in the formats switched on here are synced, EPUB and MOBI by default.
+  Every format on your server is listed with its number of books.
+- **Books:** download folder, remove finished books after a number of days.
+- **Display:** the section the plugin opens with, and whether it opens when KOReader starts.
+
+In Grimmory, the user needs the permissions **Download Books** and **KOReader Sync**. A separate
+account for the e-reader works best.
+
+To sync reading progress page by page between several devices, you can additionally point
+KOReader's progress sync at your Grimmory server (`…/api/koreader`).
+
+## Home screen behaviour
+
+With **Open when KOReader starts** (on by default) the plugin covers the file manager the first
+time it appears. A book opened from the plugin returns to the plugin when you close it.
+**Back to KOReader** in the menu shows the file manager until you open the plugin again, from
+Tools › Grimmory or with a gesture bound to the action **Open Grimmory**.
+
+## Security
+
+- Every HTTPS connection verifies the certificate chain against KOReader's CA bundle and checks
+  the host name. KOReader itself does neither for plugin requests.
+- Password, tokens and header values are stored only in `koreader/settings/grimmory.lua` on the
+  device and never written to a log. They are not encrypted there, so give the e-reader its own
+  account with only the permissions above, and revoke that account and any proxy key if the
+  device gets lost.
+- The plugin does not follow redirects, so headers and tokens never reach another host. Use an
+  `https://` address: with `http://`, password and token travel in plain text.
+
+## Status of version 1.0
+
+- Touch devices are fully supported. Devices without a touchscreen (Kindle 2 and older) can turn
+  pages and go back; selecting single items with the five-way controller is not there yet.
+- Automatic sync runs when you open the plugin with Wi-Fi on. There is no background schedule.
+- Downloads show a message but no progress bar yet.
+
+## Translations
+
+Texts live in `grimmory.koplugin/grimmory/l10n/<language>.lua`. The keys are the German texts from
+the code, `en.lua` holds every key with its English text. To add or improve a language:
+
+1. Copy `en.lua` to the KOReader language code, for example `sv.lua` or `pt_BR.lua`.
+2. Translate the values. Keep `%1`, `%2` … (their order may change). Plural entries are lists with
+   one form per plural category of the language; if it needs a rule other than "one / other",
+   add it to `PLURAL` in `grimmory/i18n.lua`.
+3. Run the checks below and open a pull request.
+
+## Development
+
+```sh
+luajit tests/test_logic.lua   # API helpers, sync, queries, version compare, without KOReader
+luajit tests/check_l10n.lua   # every language: complete, placeholders, plural forms
+```
+
+On a Kindle, `luajit` is in `/mnt/us/koreader/`.
+
+A release is made by pushing a tag `vX.Y.Z`. The version must already be in
+`grimmory.koplugin/_meta.lua`. The workflow runs the tests, builds
+`grimmory.koplugin-vX.Y.Z.zip` and creates the GitHub release.
+
+## License
+
+[Mozilla Public License 2.0](LICENSE). You may use, change and share the plugin, also as part of a
+larger work. Changes to its files stay under the MPL and have to be shared as source code.

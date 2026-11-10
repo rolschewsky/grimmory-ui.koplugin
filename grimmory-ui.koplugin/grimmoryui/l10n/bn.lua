@@ -149,7 +149,6 @@ return {
     ["Aus"] = "বন্ধ",
     ["UPDATES"] = "আপডেট",
     ["GitHub-Repo"] = "GitHub রিপো",
-    ["nur AppStore"] = "শুধু AppStore",
     ["GitHub-Repo für das Selbst-Update"] = "সেলফ-আপডেটের জন্য GitHub রিপো",
     ["besitzer/repo"] = "মালিক/রিপো",
     ["für Updates ohne AppStore"] = "AppStore ছাড়া আপডেটের জন্য",
@@ -173,8 +172,6 @@ return {
     ["Grimmory-Plugin %1"] = "Grimmory প্লাগইন %1",
     ["Zeigt die Bibliothek eines Grimmory-Servers und öffnet die Bücher in KOReader."] =
         "একটি Grimmory সার্ভারের লাইব্রেরি দেখায় এবং বইগুলো KOReader-এ খোলে।",
-    ["Updates kommen über den AppStore. Für das Selbst-Update in den Einstellungen das GitHub-Repo eintragen."] =
-        "আপডেট আসে AppStore থেকে। সেলফ-আপডেটের জন্য সেটিংসে GitHub রিপো লিখুন।",
     ["Nach Updates suchen"] = "আপডেট খুঁজুন",
     ["Prüfung fehlgeschlagen: %1"] = "যাচাই ব্যর্থ: %1",
     ["Version %1 ist aktuell."] = "সংস্করণ %1 সর্বশেষ।",

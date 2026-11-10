@@ -149,7 +149,6 @@ return {
     ["Aus"] = "Desactivado",
     ["UPDATES"] = "ACTUALIZACIONES",
     ["GitHub-Repo"] = "Repositorio de GitHub",
-    ["nur AppStore"] = "solo AppStore",
     ["GitHub-Repo für das Selbst-Update"] = "Repositorio de GitHub para la autoactualización",
     ["besitzer/repo"] = "propietario/repo",
     ["für Updates ohne AppStore"] = "para actualizaciones sin AppStore",
@@ -173,8 +172,6 @@ return {
     ["Grimmory-Plugin %1"] = "Complemento Grimmory %1",
     ["Zeigt die Bibliothek eines Grimmory-Servers und öffnet die Bücher in KOReader."] =
         "Muestra la biblioteca de un servidor Grimmory y abre los libros en KOReader.",
-    ["Updates kommen über den AppStore. Für das Selbst-Update in den Einstellungen das GitHub-Repo eintragen."] =
-        "Las actualizaciones llegan a través del AppStore. Para la autoactualización, introduce el repositorio de GitHub en los ajustes.",
     ["Nach Updates suchen"] = "Buscar actualizaciones",
     ["Prüfung fehlgeschlagen: %1"] = "Error al comprobar: %1",
     ["Version %1 ist aktuell."] = "La versión %1 está al día.",

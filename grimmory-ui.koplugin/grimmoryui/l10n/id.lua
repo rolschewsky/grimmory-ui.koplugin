@@ -147,7 +147,6 @@ return {
     ["Aus"] = "Nonaktif",
     ["UPDATES"] = "PEMBARUAN",
     ["GitHub-Repo"] = "Repo GitHub",
-    ["nur AppStore"] = "hanya AppStore",
     ["GitHub-Repo für das Selbst-Update"] = "Repo GitHub untuk pembaruan mandiri",
     ["besitzer/repo"] = "pemilik/repo",
     ["für Updates ohne AppStore"] = "untuk pembaruan tanpa AppStore",
@@ -170,8 +169,6 @@ return {
     ["Grimmory-Plugin %1"] = "Plugin Grimmory %1",
     ["Zeigt die Bibliothek eines Grimmory-Servers und öffnet die Bücher in KOReader."] =
         "Menampilkan pustaka server Grimmory dan membuka buku di KOReader.",
-    ["Updates kommen über den AppStore. Für das Selbst-Update in den Einstellungen das GitHub-Repo eintragen."] =
-        "Pembaruan tersedia melalui AppStore. Untuk pembaruan mandiri, masukkan repo GitHub di pengaturan.",
     ["Nach Updates suchen"] = "Periksa pembaruan",
     ["Prüfung fehlgeschlagen: %1"] = "Pemeriksaan gagal: %1",
     ["Version %1 ist aktuell."] = "Versi %1 sudah terbaru.",

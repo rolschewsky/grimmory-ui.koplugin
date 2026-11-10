@@ -43,8 +43,8 @@ local DEFAULTS = {
     remove_read_days = 30,
     start_tab = "start",
     autostart = true,
-    update_repo = "",
     regal_sort = "added", -- regal_genre und language haben keine Vorgabe
+    update_repo = "rolschewsky/grimmory-ui.koplugin",
 }
 
 -- Zustand über alle Dateimanager-Instanzen hinweg. KOReader legt das Plugin für jeden Dateimanager
@@ -123,7 +123,7 @@ end
 
 function Grimmory:setting(key)
     local value = self.settings:readSetting(key)
-    if value == nil then
+    if value == nil or value == "" then -- ein geleertes Feld gilt als nicht gesetzt
         if key == "download_dir" then return self:defaultDownloadDir() end
         return DEFAULTS[key]
     end
@@ -581,10 +581,6 @@ function Grimmory:showAbout()
     local repo = self:setting("update_repo")
     local text = T(_("Grimmory-Plugin %1"), version) .. "\n\n"
         .. _("Zeigt die Bibliothek eines Grimmory-Servers und öffnet die Bücher in KOReader.")
-    if repo == "" then
-        UIManager:show(InfoMessage:new{ text = text .. "\n\n" .. _("Updates kommen über den AppStore. Für das Selbst-Update in den Einstellungen das GitHub-Repo eintragen.") })
-        return
-    end
     UIManager:show(ConfirmBox:new{
         text = text,
         ok_text = _("Nach Updates suchen"),

@@ -64,8 +64,8 @@ install. Updates come the same way.
 [releases](../../releases), copy the folder `grimmory-ui.koplugin` into `koreader/plugins/` on your
 device and restart KOReader.
 
-The plugin can also update itself without a computer: enter `rolschewsky/grimmory-ui.koplugin`
-under Settings › Updates and use Menu › About Grimmory.
+The plugin can also update itself without a computer: Menu › About Grimmory checks this
+repository for a new release. A fork can enter its own repository under Settings › Updates.
 
 This plugin is not [Grimmory Sync](https://github.com/grimmory-tools/grimmory.koplugin), the
 official plugin that syncs reading progress. Both can be installed side by side.

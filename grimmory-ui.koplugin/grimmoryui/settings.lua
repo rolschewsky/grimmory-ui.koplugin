@@ -275,7 +275,7 @@ function Settings:rows()
     toggle(_("Beim Start von KOReader öffnen"), _("statt des Dateimanagers"), "autostart")
 
     section(_("UPDATES"))
-    value(_("GitHub-Repo"), show(p:setting("update_repo"), _("nur AppStore")), function()
+    value(_("GitHub-Repo"), p:setting("update_repo"), function()
         self:edit(_("GitHub-Repo für das Selbst-Update"), "update_repo", { hint = _("besitzer/repo") })
     end, _("für Updates ohne AppStore"))
     return list

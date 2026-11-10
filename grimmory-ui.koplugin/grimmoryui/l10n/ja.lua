@@ -147,7 +147,6 @@ return {
     ["Aus"] = "オフ",
     ["UPDATES"] = "アップデート",
     ["GitHub-Repo"] = "GitHubリポジトリ",
-    ["nur AppStore"] = "AppStoreのみ",
     ["GitHub-Repo für das Selbst-Update"] = "自己アップデート用のGitHubリポジトリ",
     ["besitzer/repo"] = "所有者/リポジトリ",
     ["für Updates ohne AppStore"] = "AppStoreを使わないアップデート用",
@@ -170,8 +169,6 @@ return {
     ["Grimmory-Plugin %1"] = "Grimmoryプラグイン %1",
     ["Zeigt die Bibliothek eines Grimmory-Servers und öffnet die Bücher in KOReader."] =
         "Grimmoryサーバーのライブラリを表示し、本をKOReaderで開きます。",
-    ["Updates kommen über den AppStore. Für das Selbst-Update in den Einstellungen das GitHub-Repo eintragen."] =
-        "アップデートはAppStoreから届きます。自己アップデートには、設定でGitHubリポジトリを入力してください。",
     ["Nach Updates suchen"] = "アップデートを確認",
     ["Prüfung fehlgeschlagen: %1"] = "確認に失敗：%1",
     ["Version %1 ist aktuell."] = "バージョン%1は最新です。",

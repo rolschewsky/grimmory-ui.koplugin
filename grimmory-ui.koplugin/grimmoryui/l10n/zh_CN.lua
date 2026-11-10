@@ -147,7 +147,6 @@ return {
     ["Aus"] = "关",
     ["UPDATES"] = "更新",
     ["GitHub-Repo"] = "GitHub 仓库",
-    ["nur AppStore"] = "仅 AppStore",
     ["GitHub-Repo für das Selbst-Update"] = "用于自更新的 GitHub 仓库",
     ["besitzer/repo"] = "所有者/仓库",
     ["für Updates ohne AppStore"] = "用于不经 AppStore 的更新",
@@ -170,8 +169,6 @@ return {
     ["Grimmory-Plugin %1"] = "Grimmory 插件 %1",
     ["Zeigt die Bibliothek eines Grimmory-Servers und öffnet die Bücher in KOReader."] =
         "显示 Grimmory 服务器上的书库，并在 KOReader 中打开书籍。",
-    ["Updates kommen über den AppStore. Für das Selbst-Update in den Einstellungen das GitHub-Repo eintragen."] =
-        "更新通过 AppStore 提供。如需自更新，请在设置中填写 GitHub 仓库。",
     ["Nach Updates suchen"] = "检查更新",
     ["Prüfung fehlgeschlagen: %1"] = "检查失败：%1",
     ["Version %1 ist aktuell."] = "版本 %1 已是最新。",

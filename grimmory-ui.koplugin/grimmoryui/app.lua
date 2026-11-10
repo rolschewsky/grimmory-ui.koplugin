@@ -95,7 +95,7 @@ function App:init()
     self.stack = {}
     self.page = {}
     self.search_query = ""
-    self.search_sort = "added"
+    self.search_sort = self.plugin:setting("search_sort")
     self.reihen_sort = "read"
     self.regal_genre = self.plugin:setting("regal_genre")
     self.regal_sort = self.plugin:setting("regal_sort")
@@ -693,6 +693,15 @@ local REGAL_SORTS = {
     { value = "random", label = _("Zufall"), short = _("Zufall") },
 }
 
+--- Die Suche sortiert wie das Regal und dazu nach Größe, für „Auf dem Gerät“.
+local SEARCH_SORTS = { unpack(REGAL_SORTS) }
+table.insert(SEARCH_SORTS, { value = "size", label = _("Größe") })
+
+local function sortLabel(sorts, value, field)
+    for _, s in ipairs(sorts) do if s.value == value then return s[field] end end
+    return sorts[1][field]
+end
+
 --- Das gewählte Genre, solange es im Regal noch Bücher hat. Sonst gilt „Alle Genres“, die Wahl
 --- bleibt aber gespeichert und greift wieder, sobald das Genre zurück ist.
 function App:regalGenre()
@@ -707,10 +716,9 @@ function App:screenRegal(h)
         on_menu = function() self.plugin:showMenu() end }
     local genre_name = self:regalGenre()
     local books = lib.sortBooks(lib.byGenre(data.books, genre_name), self.regal_sort, self.shuffle_seed)
-    local sort = REGAL_SORTS[1]
-    for _, s in ipairs(REGAL_SORTS) do if s.value == self.regal_sort then sort = s end end
     local sort_content = HorizontalGroup:new{ align = "center",
-        UI.text(sort.short, 24, { bold = true, max_width = UI.px(170) }), UI.hspan(10), UI.icon("control.expand", 28) }
+        UI.text(sortLabel(REGAL_SORTS, self.regal_sort, "short"), 24, { bold = true, max_width = UI.px(170) }),
+        UI.hspan(10), UI.icon("control.expand", 28) }
     local genre = UI.HorizontalGroup:new{ align = "center",
         UI.tap(UI.box(HorizontalGroup:new{ align = "center",
             UI.icon("appbar.search", 28), UI.hspan(10),
@@ -718,7 +726,7 @@ function App:screenRegal(h)
             UI.px(280), UI.px(72), { radius = 12 }), function() self:pickGenre() end),
         UI.hspan(16),
         UI.tap(UI.box(sort_content, sort_content:getSize().w + UI.px(40), UI.px(72), { radius = 12 }),
-            function() self:pickSort() end) }
+            function() self:pickSort("regal_sort", REGAL_SORTS) end) }
     local cols, cw, gap = columns(220)
     local fixed = UI.px(104) + UI.px(2) + UI.px(8) + UI.px(16) -- Kopfzeile, Linie, Abstand, Luft unten
     local cell_h = UI.px(250) + UI.px(8) + titleHeight()
@@ -760,19 +768,20 @@ function App:pickGenre()
     })
 end
 
---- Sortierung des Regals wählen. „Zufall“ mischt bei jeder Wahl neu.
-function App:pickSort()
+--- Sortierung von Regal oder Suche wählen, `key` ist regal_sort oder search_sort. „Zufall“ mischt
+--- bei jeder Wahl neu.
+function App:pickSort(key, sorts)
     local items = {}
-    for _, s in ipairs(REGAL_SORTS) do
-        table.insert(items, { label = s.label, value = s.value, selected = s.value == self.regal_sort })
+    for _, s in ipairs(sorts) do
+        table.insert(items, { label = s.label, value = s.value, selected = s.value == self[key] })
     end
     local Picker = require("grimmoryui/picker")
     UIManager:show(Picker:new{
         back = _("Sortierung"), items = items,
         on_pick = function(v)
-            self.regal_sort = v
+            self[key] = v
             if v == "random" then self.shuffle_seed = os.time() end
-            self.plugin:saveSetting("regal_sort", v)
+            self.plugin:saveSetting(key, v)
             self:resetPage()
             self:render()
         end,
@@ -788,12 +797,6 @@ local FILTERS = {
     { id = "read", label = _("Gelesen") },
 }
 
-local SORTS = {
-    { value = "added", label = _("Zuletzt hinzugefügt") },
-    { value = "title", label = _("Titel") },
-    { value = "size", label = _("Größe") },
-}
-
 function App:searchResults()
     local list = {}
     for _, b in ipairs(lib.search(self:data().books, self.search_query)) do
@@ -805,14 +808,7 @@ function App:searchResults()
         end
         if keep then table.insert(list, b) end
     end
-    if self.search_sort == "title" then
-        table.sort(list, function(a, b) return (a.title or "") < (b.title or "") end)
-    elseif self.search_sort == "size" then
-        table.sort(list, function(a, b) return (tonumber(a.fileSizeKb) or 0) > (tonumber(b.fileSizeKb) or 0) end)
-    else
-        table.sort(list, function(a, b) return (a.addedOn or "") > (b.addedOn or "") end)
-    end
-    return list
+    return lib.sortBooks(list, self.search_sort, self.shuffle_seed + 1) -- anders gemischt als das Regal
 end
 
 function App:screenSuche(h)
@@ -845,10 +841,8 @@ function App:screenSuche(h)
             self:render()
         end))
     end
-    local sort_label = SORTS[1].label
-    for _, s in ipairs(SORTS) do if s.value == self.search_sort then sort_label = s.label end end
-    local sort = UI.dropdown(_("Sortiert:"), sort_label, function()
-        self:choose(_("Sortieren"), SORTS, function(v) self.search_sort = v; self:resetPage(); self:render() end)
+    local sort = UI.dropdown(_("Sortiert:"), sortLabel(SEARCH_SORTS, self.search_sort, "label"), function()
+        self:pickSort("search_sort", SEARCH_SORTS)
     end)
     local row_h = UI.px(122)
     local chip_row = UI.padded(HorizontalGroup:new(chips), 16, 0)

@@ -28,8 +28,8 @@ from a 2009 Kindle 2 to a Kobo Libra Colour.
 | **Home** | A greeting for the time of day, your server and when it last synced. Continue reading, four random books, the four most recently added. |
 | **Series** | Every series with its reading state per volume (read, in progress, unread, missing from Grimmory); long series become a progress bar. |
 | **Browse** | A random series, a random book with its blurb, and three random genres as tabs. Shuffle for new picks. |
-| **Shelf** | The whole library as a cover grid. Filter by genre and sort by date added, title, author, series, last read or at random; both choices are remembered. |
-| **Search** | Title, author and series search with filters for in progress, unread, read and on this device. |
+| **Shelf** | The whole library as a cover grid. Filter by genre and sort by date added, title, author, series, last read or at random (the default); both choices are remembered. |
+| **Search** | Title, author and series search with filters for in progress, unread, read and on this device. Sorted like the Shelf or by size, at random by default; the choice is remembered. |
 
 From the menu you can sync, see what is stored on the device and free up space book by book,
 open the settings, check for updates, show a QR code to star the project on GitHub, or go back

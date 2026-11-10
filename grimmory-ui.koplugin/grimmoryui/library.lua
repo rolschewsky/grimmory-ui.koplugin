@@ -309,11 +309,9 @@ local function shuffleRank(book, seed)
     return h
 end
 
---- Sortierungen des Regals, die erste ist die Vorgabe.
-M.SORTS = { "added", "title", "author", "series", "read", "random" }
-
 --- Bücher sortiert: added (zuletzt hinzugefügt), title, author (Nachname), series (Reihen in
---- Bandfolge, Einzelbände nach Titel dazwischen), read (zuletzt gelesen) oder random (mit `seed`).
+--- Bandfolge, Einzelbände nach Titel dazwischen), read (zuletzt gelesen), size (größte zuerst)
+--- oder random (mit `seed`).
 function M.sortBooks(books, mode, seed)
     local list = {}
     for i, b in ipairs(books) do list[i] = b end
@@ -344,6 +342,12 @@ function M.sortBooks(books, mode, seed)
             local ra, rb = a.lastReadTime or "", b.lastReadTime or ""
             if ra ~= rb then return ra > rb end
             return (a.addedOn or "") > (b.addedOn or "")
+        end
+    elseif mode == "size" then
+        cmp = function(a, b)
+            local sa, sb = tonumber(a.fileSizeKb) or 0, tonumber(b.fileSizeKb) or 0
+            if sa ~= sb then return sa > sb end
+            return byTitle(a, b)
         end
     elseif mode == "random" then
         cmp = function(a, b)

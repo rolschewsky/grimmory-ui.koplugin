@@ -77,8 +77,10 @@ assert(slots[1] == "unread" and slots[2] == "reading" and slots[3] == "missing" 
 assert(slots[5] == "missing")
 assert(#lib.seriesSlots(nil, sw, state) == 4)
 
--- Sortierungen des Regals
+-- Sortierungen von Regal und Suche
 local function ids(list) local t = {} for i, b in ipairs(list) do t[i] = b.id end return table.concat(t, ",") end
+assert(ids(lib.sortBooks({ { id = 1, title = "B", fileSizeKb = 10 }, { id = 2, title = "A", fileSizeKb = "900" },
+    { id = 3, title = "A", fileSizeKb = 10 } }, "size")) == "2,3,1") -- größte zuerst, gleich groß nach Titel
 assert(ids(lib.sortBooks(books, "added")) == "2,3,1,4")
 assert(ids(lib.sortBooks(books, "title")) == "4,1,3,2")    -- Die, Fünf, Pater, Reise
 assert(ids(lib.sortBooks(books, "author")) == "3,4,1,2")   -- Chesterton vor Verne, darin nach Titel

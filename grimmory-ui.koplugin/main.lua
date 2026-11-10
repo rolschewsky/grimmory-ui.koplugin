@@ -43,8 +43,9 @@ local DEFAULTS = {
     remove_read_days = 30,
     start_tab = "start",
     autostart = true,
-    regal_sort = "added", -- regal_genre und language haben keine Vorgabe
     update_repo = "rolschewsky/grimmory-ui.koplugin",
+    regal_sort = "random", -- regal_genre und language haben keine Vorgabe
+    search_sort = "random",
 }
 
 -- Zustand über alle Dateimanager-Instanzen hinweg. KOReader legt das Plugin für jeden Dateimanager

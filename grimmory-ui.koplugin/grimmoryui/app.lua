@@ -97,6 +97,9 @@ function App:init()
     self.search_query = ""
     self.search_sort = "added"
     self.reihen_sort = "read"
+    self.regal_genre = self.plugin:setting("regal_genre")
+    self.regal_sort = self.plugin:setting("regal_sort")
+    self.shuffle_seed = os.time()
     self:reroll()
     self:render()
 end
@@ -681,17 +684,41 @@ end
 
 -- Regal --------------------------------------------------------------------------------------
 
+local REGAL_SORTS = {
+    { value = "added", label = _("Zuletzt hinzugefügt"), short = _("Neueste") },
+    { value = "title", label = _("Titel"), short = _("Titel") },
+    { value = "author", label = _("Autor"), short = _("Autor") },
+    { value = "series", label = _("Reihe und Band"), short = _("Reihe") },
+    { value = "read", label = _("Zuletzt gelesen"), short = _("Zuletzt gelesen") },
+    { value = "random", label = _("Zufall"), short = _("Zufall") },
+}
+
+--- Das gewählte Genre, solange es im Regal noch Bücher hat. Sonst gilt „Alle Genres“, die Wahl
+--- bleibt aber gespeichert und greift wieder, sobald das Genre zurück ist.
+function App:regalGenre()
+    local genre = self.regal_genre
+    if genre and #lib.byGenre(self:data().books, genre) == 0 then return nil end
+    return genre
+end
+
 function App:screenRegal(h)
     local data = self:data()
     local head = { title = _("Regal"), subtitle = self:subtitle(count(#data.books, "%1 Buch", "%1 Bücher")),
         on_menu = function() self.plugin:showMenu() end }
-    local books = lib.byGenre(lib.recent(data.books, #data.books), self.regal_genre)
+    local genre_name = self:regalGenre()
+    local books = lib.sortBooks(lib.byGenre(data.books, genre_name), self.regal_sort, self.shuffle_seed)
+    local sort = REGAL_SORTS[1]
+    for _, s in ipairs(REGAL_SORTS) do if s.value == self.regal_sort then sort = s end end
+    local sort_content = HorizontalGroup:new{ align = "center",
+        UI.text(sort.short, 24, { bold = true, max_width = UI.px(170) }), UI.hspan(10), UI.icon("control.expand", 28) }
     local genre = UI.HorizontalGroup:new{ align = "center",
-        UI.text(_("Genre:"), 26, { color = UI.GRAY }), UI.hspan(12),
         UI.tap(UI.box(HorizontalGroup:new{ align = "center",
             UI.icon("appbar.search", 28), UI.hspan(10),
-            UI.text(self.regal_genre or _("Alle Genres"), 26, { bold = true, max_width = UI.px(260) }) },
-            UI.px(380), UI.px(72), { radius = 12 }), function() self:pickGenre() end) }
+            UI.text(genre_name or _("Alle Genres"), 24, { bold = true, max_width = UI.px(200) }) },
+            UI.px(280), UI.px(72), { radius = 12 }), function() self:pickGenre() end),
+        UI.hspan(16),
+        UI.tap(UI.box(sort_content, sort_content:getSize().w + UI.px(40), UI.px(72), { radius = 12 }),
+            function() self:pickSort() end) }
     local cols, cw, gap = columns(220)
     local fixed = UI.px(104) + UI.px(2) + UI.px(8) + UI.px(16) -- Kopfzeile, Linie, Abstand, Luft unten
     local cell_h = UI.px(250) + UI.px(8) + titleHeight()
@@ -712,36 +739,44 @@ function App:screenRegal(h)
     return head, VerticalGroup:new(parts)
 end
 
---- Genre wählen, mit Suche bei vielen Genres.
-function App:pickGenre(filter)
-    local options = { { label = _("Alle Genres") .. " · " .. #self:data().books, value = false } }
-    if not filter then
-        table.insert(options, { label = _("Genre suchen …"), value = "__search" })
+--- Genre wählen auf einer eigenen Seite, die blättert und sucht. Die Wahl bleibt gespeichert.
+function App:pickGenre()
+    local books = self:data().books
+    local current = self:regalGenre()
+    local items = { { label = _("Alle Genres"), right = tostring(#books), value = false, selected = not current,
+        keep = true } }
+    for _, g in ipairs(lib.genres(books)) do
+        table.insert(items, { label = g.name, right = tostring(g.count), value = g.name, selected = g.name == current })
     end
-    for _, g in ipairs(lib.genres(self:data().books)) do
-        if not filter or #lib.search({ { title = g.name } }, filter) > 0 then
-            table.insert(options, { label = string.format("%s · %d", g.name, g.count), value = g.name })
-        end
+    local Picker = require("grimmoryui/picker")
+    UIManager:show(Picker:new{
+        back = _("Regal"), items = items, searchable = true, search_hint = _("Genre suchen"),
+        on_pick = function(v)
+            self.regal_genre = v or nil
+            self.plugin:saveSetting("regal_genre", self.regal_genre)
+            self:resetPage()
+            self:render()
+        end,
+    })
+end
+
+--- Sortierung des Regals wählen. „Zufall“ mischt bei jeder Wahl neu.
+function App:pickSort()
+    local items = {}
+    for _, s in ipairs(REGAL_SORTS) do
+        table.insert(items, { label = s.label, value = s.value, selected = s.value == self.regal_sort })
     end
-    self:choose(_("Genre"), options, function(v)
-        if v == "__search" then
-            local dialog
-            dialog = InputDialog:new{
-                title = _("Genre suchen"),
-                buttons = { { { text = _("Suchen"), is_enter_default = true, callback = function()
-                    local q = dialog:getInputText()
-                    UIManager:close(dialog)
-                    self:pickGenre(q)
-                end } } },
-            }
-            UIManager:show(dialog)
-            dialog:onShowKeyboard()
-            return
-        end
-        self.regal_genre = v or nil
-        self:resetPage()
-        self:render()
-    end)
+    local Picker = require("grimmoryui/picker")
+    UIManager:show(Picker:new{
+        back = _("Sortierung"), items = items,
+        on_pick = function(v)
+            self.regal_sort = v
+            if v == "random" then self.shuffle_seed = os.time() end
+            self.plugin:saveSetting("regal_sort", v)
+            self:resetPage()
+            self:render()
+        end,
+    })
 end
 
 -- Suche --------------------------------------------------------------------------------------

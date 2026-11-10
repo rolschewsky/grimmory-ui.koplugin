@@ -77,6 +77,16 @@ assert(slots[1] == "unread" and slots[2] == "reading" and slots[3] == "missing" 
 assert(slots[5] == "missing")
 assert(#lib.seriesSlots(nil, sw, state) == 4)
 
+-- Sortierungen des Regals
+local function ids(list) local t = {} for i, b in ipairs(list) do t[i] = b.id end return table.concat(t, ",") end
+assert(ids(lib.sortBooks(books, "added")) == "2,3,1,4")
+assert(ids(lib.sortBooks(books, "title")) == "4,1,3,2")    -- Die, Fünf, Pater, Reise
+assert(ids(lib.sortBooks(books, "author")) == "3,4,1,2")   -- Chesterton vor Verne, darin nach Titel
+assert(ids(lib.sortBooks(books, "series")) == "1,2,4,3")   -- Reihe in Bandfolge, „Pater Brown“ danach
+assert(ids(lib.sortBooks(books, "read")) == "2,3,1,4")     -- gelesen zuerst, dann nach Zugang
+assert(ids(lib.sortBooks(books, "random", 7)) == ids(lib.sortBooks(books, "random", 7)))
+assert(#lib.sortBooks(books, "random", 7) == 4 and books[1].id == 1) -- Original bleibt unverändert
+
 -- Seiten, Zufall, Neuzugänge, Weiterlesen
 local list = {}
 for i = 1, 23 do list[i] = i end

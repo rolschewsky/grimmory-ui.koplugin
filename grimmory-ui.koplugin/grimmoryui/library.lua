@@ -295,6 +295,73 @@ function M.recent(books, n)
     return out
 end
 
+--- Nachname des ersten Autors: das letzte Wort, „doyle“ aus „Arthur Conan Doyle“.
+local function lastName(book)
+    local author = (book.authors or {})[1] or ""
+    return lower(author:match("(%S+)%s*$") or author)
+end
+
+--- Fester Rang je Buch und `seed`: „Zufall“ mischt so nicht bei jedem Blättern neu.
+local function shuffleRank(book, seed)
+    local s = tostring(book.id) .. ":" .. tostring(seed)
+    local h = 5381
+    for i = 1, #s do h = (h * 33 + s:byte(i)) % 2147483647 end
+    return h
+end
+
+--- Sortierungen des Regals, die erste ist die Vorgabe.
+M.SORTS = { "added", "title", "author", "series", "read", "random" }
+
+--- Bücher sortiert: added (zuletzt hinzugefügt), title, author (Nachname), series (Reihen in
+--- Bandfolge, Einzelbände nach Titel dazwischen), read (zuletzt gelesen) oder random (mit `seed`).
+function M.sortBooks(books, mode, seed)
+    local list = {}
+    for i, b in ipairs(books) do list[i] = b end
+    local function title(b) return lower(b.title or "") end
+    local function byTitle(a, b) return title(a) < title(b) end
+    local cmp
+    if mode == "title" then
+        cmp = byTitle
+    elseif mode == "author" then
+        cmp = function(a, b)
+            local la, lb = lastName(a), lastName(b)
+            if la ~= lb then return la < lb end
+            return byTitle(a, b)
+        end
+    elseif mode == "series" then
+        local function key(b)
+            return lower((b.seriesName and b.seriesName ~= "") and b.seriesName or b.title or "")
+        end
+        cmp = function(a, b)
+            local ka, kb = key(a), key(b)
+            if ka ~= kb then return ka < kb end
+            local na, nb = tonumber(a.seriesNumber) or math.huge, tonumber(b.seriesNumber) or math.huge
+            if na ~= nb then return na < nb end
+            return byTitle(a, b)
+        end
+    elseif mode == "read" then
+        cmp = function(a, b)
+            local ra, rb = a.lastReadTime or "", b.lastReadTime or ""
+            if ra ~= rb then return ra > rb end
+            return (a.addedOn or "") > (b.addedOn or "")
+        end
+    elseif mode == "random" then
+        cmp = function(a, b)
+            local ra, rb = shuffleRank(a, seed), shuffleRank(b, seed)
+            if ra ~= rb then return ra < rb end
+            return tostring(a.id) < tostring(b.id)
+        end
+    else
+        cmp = function(a, b)
+            local da, db = a.addedOn or "", b.addedOn or ""
+            if da ~= db then return da > db end
+            return byTitle(a, b)
+        end
+    end
+    table.sort(list, cmp)
+    return list
+end
+
 --- Das Buch, an dem zuletzt gelesen wurde und das noch nicht fertig ist.
 function M.continueReading(books, state)
     local best

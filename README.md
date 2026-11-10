@@ -28,7 +28,7 @@ from a 2009 Kindle 2 to a Kobo Libra Colour.
 | **Home** | A greeting for the time of day, your server and when it last synced. Continue reading, four random books, the four most recently added. |
 | **Series** | Every series with its reading state per volume (read, in progress, unread, missing from Grimmory); long series become a progress bar. |
 | **Browse** | A random series, a random book with its blurb, and three random genres as tabs. Shuffle for new picks. |
-| **Shelf** | The whole library as a cover grid, filterable by genre. |
+| **Shelf** | The whole library as a cover grid. Filter by genre and sort by date added, title, author, series, last read or at random; both choices are remembered. |
 | **Search** | Title, author and series search with filters for in progress, unread, read and on this device. |
 
 From the menu you can sync, see what is stored on the device and free up space book by book,
@@ -48,7 +48,8 @@ device and sends nothing.
 - **Keeps the device tidy.** Finished books can be removed automatically after a number of days.
 - **15 languages.** English, German, French, Spanish, Italian, Portuguese, Polish, Romanian, Dutch,
   Greek, Simplified Chinese, Japanese, Hindi, Bengali and Indonesian. The plugin follows
-  KOReader's language setting and falls back to English.
+  KOReader's language setting and falls back to English; Menu › Language picks a language for the
+  plugin alone.
 
 <p align="center"><img src="docs/screenshots/languages.png" alt="The home screen in German, French, Greek, Hindi, Japanese and Chinese"></p>
 

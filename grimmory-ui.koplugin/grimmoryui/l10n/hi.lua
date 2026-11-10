@@ -57,10 +57,7 @@ return {
     ["ZUFÄLLIGE GENRES"] = "रैंडम शैलियाँ",
 
     -- Shelf
-    ["Genre:"] = "शैली:",
-    ["Genre"] = "शैली",
     ["Alle Genres"] = "सभी शैलियाँ",
-    ["Genre suchen …"] = "शैली खोजें …",
     ["Genre suchen"] = "शैली खोजें",
 
     -- Search
@@ -221,4 +218,16 @@ return {
     ["Stern auf GitHub, per QR-Code"] = "GitHub पर स्टार, QR कोड से",
     ["Scanne den Code mit dem Handy und vergib auf GitHub einen Stern. Danke!"] = "अपने फ़ोन से कोड स्कैन करें और GitHub पर स्टार दें। धन्यवाद!",
     ["Schließen"] = "बंद करें",
+
+    -- Sprache, Genre-Seite, Sortierung im Regal
+    ["Sprache"] = "भाषा",
+    ["Wie KOReader"] = "KOReader जैसी",
+    ["Die neue Sprache gilt nach einem Neustart von KOReader."] = "नई भाषा KOReader को फिर से शुरू करने के बाद लागू होगी।",
+    ["Sortierung"] = "क्रम",
+    ["Neueste"] = "सबसे नए",
+    ["Autor"] = "लेखक",
+    ["Reihe"] = "सीरीज़",
+    ["Reihe und Band"] = "सीरीज़ और भाग",
+    ["Zufall"] = "यादृच्छिक",
+    ["Nichts gefunden"] = "कुछ नहीं मिला",
 }

@@ -55,10 +55,7 @@ return {
     ["ZUFÄLLIGE GENRES"] = "GENURI ALEATORII",
 
     -- Shelf
-    ["Genre:"] = "Gen:",
-    ["Genre"] = "Gen",
     ["Alle Genres"] = "Toate genurile",
-    ["Genre suchen …"] = "Căutați un gen …",
     ["Genre suchen"] = "Căutați un gen",
 
     -- Search
@@ -210,4 +207,16 @@ return {
     ["Stern auf GitHub, per QR-Code"] = "Stea pe GitHub, prin cod QR",
     ["Scanne den Code mit dem Handy und vergib auf GitHub einen Stern. Danke!"] = "Scanați codul cu telefonul și acordați o stea pe GitHub. Mulțumim!",
     ["Schließen"] = "Închideți",
+
+    -- Sprache, Genre-Seite, Sortierung im Regal
+    ["Sprache"] = "Limbă",
+    ["Wie KOReader"] = "Ca în KOReader",
+    ["Die neue Sprache gilt nach einem Neustart von KOReader."] = "Noua limbă se aplică după repornirea KOReader.",
+    ["Sortierung"] = "Sortare",
+    ["Neueste"] = "Cele mai noi",
+    ["Autor"] = "Autor",
+    ["Reihe"] = "Serie",
+    ["Reihe und Band"] = "Serie și volum",
+    ["Zufall"] = "Aleatoriu",
+    ["Nichts gefunden"] = "Nu s-a găsit nimic",
 }

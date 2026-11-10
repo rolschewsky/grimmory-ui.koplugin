@@ -57,10 +57,7 @@ return {
     ["ZUFÄLLIGE GENRES"] = "GENERI A CASO",
 
     -- Shelf
-    ["Genre:"] = "Genere:",
-    ["Genre"] = "Genere",
     ["Alle Genres"] = "Tutti i generi",
-    ["Genre suchen …"] = "Cerca genere…",
     ["Genre suchen"] = "Cerca genere",
 
     -- Search
@@ -221,4 +218,16 @@ return {
     ["Stern auf GitHub, per QR-Code"] = "Stella su GitHub, tramite codice QR",
     ["Scanne den Code mit dem Handy und vergib auf GitHub einen Stern. Danke!"] = "Scansiona il codice con il telefono e lascia una stella su GitHub. Grazie!",
     ["Schließen"] = "Chiudi",
+
+    -- Sprache, Genre-Seite, Sortierung im Regal
+    ["Sprache"] = "Lingua",
+    ["Wie KOReader"] = "Come KOReader",
+    ["Die neue Sprache gilt nach einem Neustart von KOReader."] = "La nuova lingua vale dopo il riavvio di KOReader.",
+    ["Sortierung"] = "Ordinamento",
+    ["Neueste"] = "Più recenti",
+    ["Autor"] = "Autore",
+    ["Reihe"] = "Serie",
+    ["Reihe und Band"] = "Serie e volume",
+    ["Zufall"] = "Casuale",
+    ["Nichts gefunden"] = "Nessun risultato",
 }

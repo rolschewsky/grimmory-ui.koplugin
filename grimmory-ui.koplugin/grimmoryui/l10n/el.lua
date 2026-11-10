@@ -55,10 +55,7 @@ return {
     ["ZUFÄLLIGE GENRES"] = "ΤΥΧΑΙΑ ΕΙΔΗ",
 
     -- Shelf
-    ["Genre:"] = "Είδος:",
-    ["Genre"] = "Είδος",
     ["Alle Genres"] = "Όλα τα είδη",
-    ["Genre suchen …"] = "Αναζήτηση είδους …",
     ["Genre suchen"] = "Αναζήτηση είδους",
 
     -- Search
@@ -210,4 +207,16 @@ return {
     ["Stern auf GitHub, per QR-Code"] = "Αστέρι στο GitHub, με κωδικό QR",
     ["Scanne den Code mit dem Handy und vergib auf GitHub einen Stern. Danke!"] = "Σαρώστε τον κωδικό με το κινητό σας και δώστε ένα αστέρι στο GitHub. Ευχαριστούμε!",
     ["Schließen"] = "Κλείσιμο",
+
+    -- Sprache, Genre-Seite, Sortierung im Regal
+    ["Sprache"] = "Γλώσσα",
+    ["Wie KOReader"] = "Όπως το KOReader",
+    ["Die neue Sprache gilt nach einem Neustart von KOReader."] = "Η νέα γλώσσα ισχύει μετά την επανεκκίνηση του KOReader.",
+    ["Sortierung"] = "Ταξινόμηση",
+    ["Neueste"] = "Νεότερα",
+    ["Autor"] = "Συγγραφέας",
+    ["Reihe"] = "Σειρά",
+    ["Reihe und Band"] = "Σειρά και τόμος",
+    ["Zufall"] = "Τυχαία",
+    ["Nichts gefunden"] = "Δεν βρέθηκε τίποτα",
 }

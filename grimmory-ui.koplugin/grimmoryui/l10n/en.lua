@@ -57,10 +57,7 @@ return {
     ["ZUFÄLLIGE GENRES"] = "RANDOM GENRES",
 
     -- Shelf
-    ["Genre:"] = "Genre:",
-    ["Genre"] = "Genre",
     ["Alle Genres"] = "All genres",
-    ["Genre suchen …"] = "Search genre …",
     ["Genre suchen"] = "Search genre",
 
     -- Search
@@ -220,4 +217,16 @@ return {
     ["Stern auf GitHub, per QR-Code"] = "Star on GitHub, via QR code",
     ["Scanne den Code mit dem Handy und vergib auf GitHub einen Stern. Danke!"] = "Scan the code with your phone and give it a star on GitHub. Thank you!",
     ["Schließen"] = "Close",
+
+    -- Sprache, Genre-Seite, Sortierung im Regal
+    ["Sprache"] = "Language",
+    ["Wie KOReader"] = "Same as KOReader",
+    ["Die neue Sprache gilt nach einem Neustart von KOReader."] = "The new language applies after restarting KOReader.",
+    ["Sortierung"] = "Sort order",
+    ["Neueste"] = "Newest",
+    ["Autor"] = "Author",
+    ["Reihe"] = "Series",
+    ["Reihe und Band"] = "Series and volume",
+    ["Zufall"] = "Random",
+    ["Nichts gefunden"] = "Nothing found",
 }

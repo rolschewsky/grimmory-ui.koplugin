@@ -57,10 +57,7 @@ return {
     ["ZUFÄLLIGE GENRES"] = "GENRE ACAK",
 
     -- Shelf
-    ["Genre:"] = "Genre:",
-    ["Genre"] = "Genre",
     ["Alle Genres"] = "Semua genre",
-    ["Genre suchen …"] = "Cari genre …",
     ["Genre suchen"] = "Cari genre",
 
     -- Search
@@ -218,4 +215,16 @@ return {
     ["Stern auf GitHub, per QR-Code"] = "Bintang di GitHub, lewat kode QR",
     ["Scanne den Code mit dem Handy und vergib auf GitHub einen Stern. Danke!"] = "Pindai kode dengan ponsel dan beri bintang di GitHub. Terima kasih!",
     ["Schließen"] = "Tutup",
+
+    -- Sprache, Genre-Seite, Sortierung im Regal
+    ["Sprache"] = "Bahasa",
+    ["Wie KOReader"] = "Seperti KOReader",
+    ["Die neue Sprache gilt nach einem Neustart von KOReader."] = "Bahasa baru berlaku setelah KOReader dimulai ulang.",
+    ["Sortierung"] = "Urutan",
+    ["Neueste"] = "Terbaru",
+    ["Autor"] = "Penulis",
+    ["Reihe"] = "Seri",
+    ["Reihe und Band"] = "Seri dan buku",
+    ["Zufall"] = "Acak",
+    ["Nichts gefunden"] = "Tidak ada hasil",
 }

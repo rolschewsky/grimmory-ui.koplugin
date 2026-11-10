@@ -55,10 +55,7 @@ return {
     ["ZUFÄLLIGE GENRES"] = "LOSOWE GATUNKI",
 
     -- Shelf
-    ["Genre:"] = "Gatunek:",
-    ["Genre"] = "Gatunek",
     ["Alle Genres"] = "Wszystkie gatunki",
-    ["Genre suchen …"] = "Szukaj gatunku …",
     ["Genre suchen"] = "Szukaj gatunku",
 
     -- Search
@@ -210,4 +207,16 @@ return {
     ["Stern auf GitHub, per QR-Code"] = "Gwiazdka na GitHubie, przez kod QR",
     ["Scanne den Code mit dem Handy und vergib auf GitHub einen Stern. Danke!"] = "Zeskanuj kod telefonem i daj gwiazdkę na GitHubie. Dziękujemy!",
     ["Schließen"] = "Zamknij",
+
+    -- Sprache, Genre-Seite, Sortierung im Regal
+    ["Sprache"] = "Język",
+    ["Wie KOReader"] = "Jak w KOReaderze",
+    ["Die neue Sprache gilt nach einem Neustart von KOReader."] = "Nowy język zacznie działać po ponownym uruchomieniu KOReadera.",
+    ["Sortierung"] = "Sortowanie",
+    ["Neueste"] = "Najnowsze",
+    ["Autor"] = "Autor",
+    ["Reihe"] = "Seria",
+    ["Reihe und Band"] = "Seria i tom",
+    ["Zufall"] = "Losowo",
+    ["Nichts gefunden"] = "Nic nie znaleziono",
 }

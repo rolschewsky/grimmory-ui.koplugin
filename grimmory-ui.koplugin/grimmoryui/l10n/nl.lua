@@ -55,10 +55,7 @@ return {
     ["ZUFÄLLIGE GENRES"] = "WILLEKEURIGE GENRES",
 
     -- Shelf
-    ["Genre:"] = "Genre:",
-    ["Genre"] = "Genre",
     ["Alle Genres"] = "Alle genres",
-    ["Genre suchen …"] = "Genre zoeken …",
     ["Genre suchen"] = "Genre zoeken",
 
     -- Search
@@ -210,4 +207,16 @@ return {
     ["Stern auf GitHub, per QR-Code"] = "Ster op GitHub, via QR-code",
     ["Scanne den Code mit dem Handy und vergib auf GitHub einen Stern. Danke!"] = "Scan de code met je telefoon en geef een ster op GitHub. Bedankt!",
     ["Schließen"] = "Sluiten",
+
+    -- Sprache, Genre-Seite, Sortierung im Regal
+    ["Sprache"] = "Taal",
+    ["Wie KOReader"] = "Zoals KOReader",
+    ["Die neue Sprache gilt nach einem Neustart von KOReader."] = "De nieuwe taal geldt na een herstart van KOReader.",
+    ["Sortierung"] = "Sortering",
+    ["Neueste"] = "Nieuwste",
+    ["Autor"] = "Auteur",
+    ["Reihe"] = "Reeks",
+    ["Reihe und Band"] = "Reeks en deel",
+    ["Zufall"] = "Willekeurig",
+    ["Nichts gefunden"] = "Niets gevonden",
 }

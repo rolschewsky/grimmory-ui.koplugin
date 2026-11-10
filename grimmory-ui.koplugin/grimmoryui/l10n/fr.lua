@@ -57,10 +57,7 @@ return {
     ["ZUFÄLLIGE GENRES"] = "GENRES AU HASARD",
 
     -- Shelf
-    ["Genre:"] = "Genre :",
-    ["Genre"] = "Genre",
     ["Alle Genres"] = "Tous les genres",
-    ["Genre suchen …"] = "Rechercher un genre…",
     ["Genre suchen"] = "Rechercher un genre",
 
     -- Search
@@ -221,4 +218,16 @@ return {
     ["Stern auf GitHub, per QR-Code"] = "Étoile sur GitHub, par QR code",
     ["Scanne den Code mit dem Handy und vergib auf GitHub einen Stern. Danke!"] = "Scannez le code avec votre téléphone et attribuez une étoile sur GitHub. Merci !",
     ["Schließen"] = "Fermer",
+
+    -- Sprache, Genre-Seite, Sortierung im Regal
+    ["Sprache"] = "Langue",
+    ["Wie KOReader"] = "Comme KOReader",
+    ["Die neue Sprache gilt nach einem Neustart von KOReader."] = "La nouvelle langue s’applique après le redémarrage de KOReader.",
+    ["Sortierung"] = "Tri",
+    ["Neueste"] = "Plus récents",
+    ["Autor"] = "Auteur",
+    ["Reihe"] = "Série",
+    ["Reihe und Band"] = "Série et tome",
+    ["Zufall"] = "Aléatoire",
+    ["Nichts gefunden"] = "Aucun résultat",
 }

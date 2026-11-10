@@ -57,10 +57,7 @@ return {
     ["ZUFÄLLIGE GENRES"] = "随机类型",
 
     -- Shelf
-    ["Genre:"] = "类型：",
-    ["Genre"] = "类型",
     ["Alle Genres"] = "全部类型",
-    ["Genre suchen …"] = "搜索类型…",
     ["Genre suchen"] = "搜索类型",
 
     -- Search
@@ -218,4 +215,16 @@ return {
     ["Stern auf GitHub, per QR-Code"] = "在 GitHub 上点星，扫描二维码",
     ["Scanne den Code mit dem Handy und vergib auf GitHub einen Stern. Danke!"] = "用手机扫描二维码，在 GitHub 上点个星。谢谢！",
     ["Schließen"] = "关闭",
+
+    -- Sprache, Genre-Seite, Sortierung im Regal
+    ["Sprache"] = "语言",
+    ["Wie KOReader"] = "跟随 KOReader",
+    ["Die neue Sprache gilt nach einem Neustart von KOReader."] = "新语言将在重启 KOReader 后生效。",
+    ["Sortierung"] = "排序",
+    ["Neueste"] = "最新",
+    ["Autor"] = "作者",
+    ["Reihe"] = "系列",
+    ["Reihe und Band"] = "系列和册次",
+    ["Zufall"] = "随机",
+    ["Nichts gefunden"] = "未找到内容",
 }

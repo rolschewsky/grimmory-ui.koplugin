@@ -57,10 +57,7 @@ return {
     ["ZUFÄLLIGE GENRES"] = "ランダムなジャンル",
 
     -- Shelf
-    ["Genre:"] = "ジャンル：",
-    ["Genre"] = "ジャンル",
     ["Alle Genres"] = "すべてのジャンル",
-    ["Genre suchen …"] = "ジャンルを検索…",
     ["Genre suchen"] = "ジャンルを検索",
 
     -- Search
@@ -218,4 +215,16 @@ return {
     ["Stern auf GitHub, per QR-Code"] = "GitHubでスター（QRコード）",
     ["Scanne den Code mit dem Handy und vergib auf GitHub einen Stern. Danke!"] = "スマートフォンでコードを読み取り、GitHubでスターを付けてください。ありがとうございます！",
     ["Schließen"] = "閉じる",
+
+    -- Sprache, Genre-Seite, Sortierung im Regal
+    ["Sprache"] = "言語",
+    ["Wie KOReader"] = "KOReaderと同じ",
+    ["Die neue Sprache gilt nach einem Neustart von KOReader."] = "新しい言語はKOReaderの再起動後に反映されます。",
+    ["Sortierung"] = "並べ替え",
+    ["Neueste"] = "新着",
+    ["Autor"] = "著者",
+    ["Reihe"] = "シリーズ",
+    ["Reihe und Band"] = "シリーズと巻",
+    ["Zufall"] = "ランダム",
+    ["Nichts gefunden"] = "見つかりません",
 }

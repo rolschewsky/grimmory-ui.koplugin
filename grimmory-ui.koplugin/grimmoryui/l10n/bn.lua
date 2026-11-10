@@ -57,10 +57,7 @@ return {
     ["ZUFÄLLIGE GENRES"] = "এলোমেলো ধরন",
 
     -- Shelf
-    ["Genre:"] = "ধরন:",
-    ["Genre"] = "ধরন",
     ["Alle Genres"] = "সব ধরন",
-    ["Genre suchen …"] = "ধরন খুঁজুন …",
     ["Genre suchen"] = "ধরন খুঁজুন",
 
     -- Search
@@ -221,4 +218,16 @@ return {
     ["Stern auf GitHub, per QR-Code"] = "GitHub-এ স্টার, QR কোডের মাধ্যমে",
     ["Scanne den Code mit dem Handy und vergib auf GitHub einen Stern. Danke!"] = "ফোন দিয়ে কোডটি স্ক্যান করুন এবং GitHub-এ একটি স্টার দিন। ধন্যবাদ!",
     ["Schließen"] = "বন্ধ করুন",
+
+    -- Sprache, Genre-Seite, Sortierung im Regal
+    ["Sprache"] = "ভাষা",
+    ["Wie KOReader"] = "KOReader-এর মতো",
+    ["Die neue Sprache gilt nach einem Neustart von KOReader."] = "নতুন ভাষা KOReader আবার চালু করার পর কার্যকর হবে।",
+    ["Sortierung"] = "ক্রম",
+    ["Neueste"] = "সবচেয়ে নতুন",
+    ["Autor"] = "লেখক",
+    ["Reihe"] = "সিরিজ",
+    ["Reihe und Band"] = "সিরিজ ও খণ্ড",
+    ["Zufall"] = "এলোমেলো",
+    ["Nichts gefunden"] = "কিছু পাওয়া যায়নি",
 }

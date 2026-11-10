@@ -44,6 +44,7 @@ local DEFAULTS = {
     start_tab = "start",
     autostart = true,
     update_repo = "",
+    regal_sort = "added", -- regal_genre und language haben keine Vorgabe
 }
 
 -- Zustand über alle Dateimanager-Instanzen hinweg. KOReader legt das Plugin für jeden Dateimanager
@@ -511,6 +512,38 @@ end
 
 function Grimmory:exitToKOReader()
     self:closeApp()
+end
+
+-- Sprache ------------------------------------------------------------------------------------
+
+--- Name der Sprache, die das Plugin gerade nutzt, für das Menü.
+function Grimmory:languageLabel()
+    local own = self:setting("language")
+    if own then return _.languageName(own) end
+    return _("Wie KOReader")
+end
+
+--- Sprache nur für das Plugin wählen. Die Texte stehen beim Laden fest, deshalb wirkt der Wechsel
+--- nach einem Neustart von KOReader, den KOReader selbst anbietet.
+function Grimmory:showLanguage()
+    self:closeMenu()
+    local own = self:setting("language")
+    local koreader = G_reader_settings:readSetting("language")
+    local items = { { label = _("Wie KOReader"), right = _.languageName(koreader) or "English", value = false,
+        selected = not own } }
+    for _, l in ipairs(_.LANGUAGES) do
+        table.insert(items, { label = l.name, value = l.code, selected = l.code == own })
+    end
+    local Picker = require("grimmoryui/picker")
+    UIManager:show(Picker:new{
+        back = _("Sprache"), items = items,
+        on_pick = function(code)
+            code = code or nil
+            if code == own then return end
+            self:saveSetting("language", code)
+            UIManager:askForRestart(_("Die neue Sprache gilt nach einem Neustart von KOReader."))
+        end,
+    })
 end
 
 -- Bitte um einen Stern -----------------------------------------------------------------------

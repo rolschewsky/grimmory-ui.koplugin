@@ -38,8 +38,22 @@ local function load(code)
     if ok and type(t) == "table" then return t end
 end
 
---- Sprache aus KOReader: "de", "pt_BR", "C" (Englisch) oder nil außerhalb von KOReader.
+--- Eigene Sprache des Plugins aus seinen Einstellungen, nil heißt „wie KOReader“.
+local function ownLanguage()
+    local ok_ds, DataStorage = pcall(require, "datastorage")
+    local ok_ls, LuaSettings = pcall(require, "luasettings")
+    if not (ok_ds and ok_ls) then return nil end
+    local ok, lang = pcall(function()
+        return LuaSettings:open(DataStorage:getSettingsDir() .. "/grimmory-ui.lua"):readSetting("language")
+    end)
+    return ok and lang or nil
+end
+
+--- Sprache des Plugins, sonst aus KOReader: "de", "pt_BR", "C" (Englisch) oder nil außerhalb von
+--- KOReader.
 local function language()
+    local own = ownLanguage()
+    if own then return own end
     local lang = G_reader_settings and G_reader_settings:readSetting("language")
     if lang then return lang end
     local ok, gettext = pcall(require, "gettext")
@@ -59,6 +73,25 @@ if lang and not lang:match("^de") then
     english = load("en")
 end
 M.lang = lang
+
+--- Sprachen mit Übersetzung, mit ihrem eigenen Namen. Code wie in KOReader.
+M.LANGUAGES = {
+    { code = "de", name = "Deutsch" }, { code = "en", name = "English" }, { code = "fr", name = "Français" },
+    { code = "es", name = "Español" }, { code = "it", name = "Italiano" }, { code = "pt", name = "Português" },
+    { code = "pl", name = "Polski" }, { code = "ro", name = "Română" }, { code = "nl", name = "Nederlands" },
+    { code = "el", name = "Ελληνικά" }, { code = "zh_CN", name = "简体中文" }, { code = "ja", name = "日本語" },
+    { code = "hi", name = "हिन्दी" }, { code = "bn", name = "বাংলা" }, { code = "id", name = "Bahasa Indonesia" },
+}
+
+--- Eigener Name einer Sprache aus KOReader ("pt_BR" → "Português"), sonst der Code.
+function M.languageName(code)
+    if not code then return nil end
+    local base = code:match("^%a+")
+    if code == "C" or base == "en" then return "English" end
+    for _, l in ipairs(M.LANGUAGES) do if l.code == code then return l.name end end
+    for _, l in ipairs(M.LANGUAGES) do if l.code == base then return l.name end end
+    return code
+end
 
 local function lookup(msgid)
     local s = primary and primary[msgid]

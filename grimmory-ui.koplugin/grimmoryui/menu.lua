@@ -78,6 +78,7 @@ function Menu:build()
             function() p:showOnDevice() end),
         self:item("appbar.settings", _("Einstellungen"), _("Server, Abgleich, Speicher"),
             function() p:showSettings() end),
+        self:item("appbar.textsize", _("Sprache"), p:languageLabel(), function() p:showLanguage() end),
         self:item("info", _("Über Grimmory"), T(_("Plugin %1 · Updates"), p.version or "?"),
             function() p:showAbout() end),
         self:item("star.empty", _("Grimmory bewerten"), _("Stern auf GitHub, per QR-Code"),

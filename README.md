@@ -26,9 +26,9 @@ from a 2009 Kindle 2 to a Kobo Libra Colour.
 | Section | What it shows |
 |---|---|
 | **Home** | A greeting for the time of day, your server and when it last synced. Continue reading, four random books, the four most recently added. |
-| **Series** | Every series with its reading state per volume (read, in progress, unread, missing from Grimmory); long series become a progress bar. |
+| **Series** | Every series with its reading state per volume (read, in progress, unread, missing from Grimmory); long series become a progress bar. Sorted by last read, last viewed or name; the choice is remembered. |
 | **Browse** | A random series, a random book with its blurb, and three random genres as tabs. Shuffle for new picks. |
-| **Shelf** | The whole library as a cover grid. Filter by genre and sort by date added, title, author, series, last read or at random (the default); both choices are remembered. |
+| **Shelf** | The whole library as a cover grid. Filter by genre and sort by date added, title, author, series, last read, last viewed or at random (the default); both choices are remembered. |
 | **Search** | Title, author and series search with filters for in progress, unread, read and on this device. Sorted like the Shelf or by size, at random by default; the choice is remembered. |
 
 From the menu you can sync, see what is stored on the device and free up space book by book,
@@ -42,7 +42,13 @@ device and sends nothing.
 - **Reading state both ways.** Progress from KOReader is reported back to Grimmory, so your other
   devices and the web app know where you are.
 - **Opens instead of the file manager.** Optional: the plugin becomes your home screen when
-  KOReader starts and after you close a book.
+  KOReader starts and after every book you close.
+- **Next volume at the end.** When you finish a book from Grimmory, a dialog marks it as read and
+  offers the next volume of the series.
+- **Syncs in the background.** You keep browsing while the library syncs; the header shows how
+  it is going.
+- **Recently viewed.** Shelf, Search and Series can sort by what you looked at last. This is only
+  remembered on the device.
 - **Works behind a reverse proxy.** Add any number of extra headers (an API key for your proxy,
   for example), sent with every request.
 - **Keeps the device tidy.** Finished books can be removed automatically after a number of days.
@@ -82,12 +88,13 @@ Open the menu at the top left, then **Settings**:
 - **Extra headers:** sent with every request, for example a key for a reverse proxy in front of
   Grimmory.
 - **Test** signs in and fetches the book list, so you see right away whether everything works.
-- **Sync:** automatically on open when the last sync is older than 30 minutes, report reading
-  status to Grimmory, preload covers.
+- **Sync:** automatically on open when the last sync is older than 30 minutes and Wi-Fi is on,
+  report reading status to Grimmory, preload covers.
 - **Formats:** only books in the formats switched on here are synced, EPUB and MOBI by default.
   Every format on your server is listed with its number of books.
 - **Books:** download folder, remove finished books after a number of days.
-- **Display:** the section the plugin opens with, and whether it opens when KOReader starts.
+- **Display:** the section the plugin opens with, and whether it opens instead of the file
+  manager.
 
 In Grimmory, the user needs the permissions **Download Books** and **KOReader Sync**. A separate
 account for the e-reader works best.
@@ -97,10 +104,22 @@ KOReader's progress sync at your Grimmory server (`…/api/koreader`).
 
 ## Home screen behaviour
 
-With **Open when KOReader starts** (on by default) the plugin covers the file manager the first
-time it appears. A book opened from the plugin returns to the plugin when you close it.
-**Back to KOReader** in the menu shows the file manager until you open the plugin again, from
-Tools › Grimmory or with a gesture bound to the action **Open Grimmory**.
+With **Open instead of the file manager** (on by default) the plugin covers the file manager when
+KOReader starts and every time you close a book. Switched off, it still comes back after books
+from Grimmory. **Back to KOReader** in the menu shows the file manager. Grimmory is the first entry
+under Tools in KOReader's menu, and you can bind a gesture to the action **Open Grimmory**.
+
+At the end of a book from Grimmory, the plugin shows its own dialog instead of KOReader's
+question: mark the book as read, read the next volume of the series, go back to the library or
+stay in the book. **More options from KOReader** shows KOReader's question. If you chose another
+end-of-book action in KOReader, that one stays.
+
+## Sync in the background
+
+The sync runs in a separate process, so the plugin stays usable. The header shows "Syncing …",
+then the number of new books. If the sync fails, a warning appears in the header; tap it for the
+reason. The plugin never switches Wi-Fi on for an automatic sync. While the e-reader sleeps,
+nothing runs: there is no background service outside KOReader.
 
 ## Security
 
@@ -117,7 +136,7 @@ Tools › Grimmory or with a gesture bound to the action **Open Grimmory**.
 
 - Touch devices are fully supported. Devices without a touchscreen (Kindle 2 and older) can turn
   pages and go back; selecting single items with the five-way controller is not there yet.
-- Automatic sync runs when you open the plugin with Wi-Fi on. There is no background schedule.
+- Automatic sync runs when you open the plugin with Wi-Fi on. There is no schedule.
 - Downloads show a message but no progress bar yet.
 
 ## Translations

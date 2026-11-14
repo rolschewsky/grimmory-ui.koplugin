@@ -43,7 +43,6 @@ return {
     -- Series
     ["Reihe oder Autor suchen"] = "সিরিজ বা লেখক খুঁজুন",
     ["Sortiert:"] = "সাজানো:",
-    ["Sortieren"] = "সাজান",
     ["Name"] = "নাম",
     ["Zuletzt gelesen"] = "সম্প্রতি পড়া",
     ["%1 · %2, %3 in Grimmory"] = "%1 · %2, Grimmory-তে %3",
@@ -143,8 +142,6 @@ return {
     ["Bücher einzeln vom Gerät entfernen"] = "ডিভাইস থেকে একটি একটি করে বই সরান",
     ["ANZEIGE"] = "ডিসপ্লে",
     ["Startbereich"] = "শুরুর বিভাগ",
-    ["Beim Start von KOReader öffnen"] = "KOReader চালু হলে খুলুন",
-    ["statt des Dateimanagers"] = "ফাইল ম্যানেজারের বদলে",
     ["An"] = "চালু",
     ["Aus"] = "বন্ধ",
     ["UPDATES"] = "আপডেট",
@@ -160,7 +157,6 @@ return {
     ["Bibliothek aus Grimmory: stöbern, herunterladen und mit KOReader lesen."] =
         "আপনার Grimmory লাইব্রেরি: ব্রাউজ করুন, ডাউনলোড করুন এবং KOReader-এ পড়ুন।",
     ["Bitte zuerst in den Einstellungen den Server eintragen."] = "অনুগ্রহ করে আগে সেটিংসে সার্ভার লিখুন।",
-    ["Abgleich mit Grimmory …"] = "Grimmory-এর সাথে সিঙ্ক হচ্ছে …",
     ["Abgeglichen: %1, %2."] = "সিঙ্ক হয়েছে: %1, %2।",
     ["Abgleich fehlgeschlagen: %1"] = "সিঙ্ক ব্যর্থ: %1",
     ["Wird geladen: %1"] = "ডাউনলোড হচ্ছে: %1",
@@ -227,4 +223,22 @@ return {
     ["Reihe und Band"] = "সিরিজ ও খণ্ড",
     ["Zufall"] = "এলোমেলো",
     ["Nichts gefunden"] = "কিছু পাওয়া যায়নি",
+
+    -- Recently viewed, background sync, end of book
+    ["Zuletzt angesehen"] = "সম্প্রতি দেখা",
+    ["Angesehen"] = "দেখা",
+    ["Statt des Dateimanagers öffnen"] = "ফাইল ম্যানেজারের বদলে খুলুন",
+    ["beim Start von KOReader und nach jedem Buch"] = "KOReader চালু হলে ও প্রতিটি বইয়ের পরে",
+    ["Abgleich läuft …"] = "সিঙ্ক হচ্ছে …",
+    ["Abgleich fehlgeschlagen"] = "সিঙ্ক ব্যর্থ",
+    ["%1 neues Buch"] = { "%1টি নতুন বই", "%1টি নতুন বই" },
+    ["gerade abgeglichen"] = "এইমাত্র সিঙ্ক হয়েছে",
+    ["ZU ENDE GELESEN"] = "পড়া শেষ",
+    ["Als gelesen markieren und an Grimmory melden"] = "পঠিত হিসেবে চিহ্নিত করে Grimmory-কে জানান",
+    ["WEITER IN DER REIHE"] = "সিরিজের পরের বই",
+    ["Band %1 lesen"] = "খণ্ড %1 পড়ুন",
+    ["Band %1 laden und lesen"] = "খণ্ড %1 ডাউনলোড করে পড়ুন",
+    ["Zu Grimmory"] = "Grimmory-তে যান",
+    ["Im Buch bleiben"] = "বইয়ে থাকুন",
+    ["Weitere Möglichkeiten von KOReader"] = "KOReader-এর আরও বিকল্প",
 }

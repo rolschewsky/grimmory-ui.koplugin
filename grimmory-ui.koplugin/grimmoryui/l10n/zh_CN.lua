@@ -43,7 +43,6 @@ return {
     -- Series
     ["Reihe oder Autor suchen"] = "搜索系列或作者",
     ["Sortiert:"] = "排序：",
-    ["Sortieren"] = "排序",
     ["Name"] = "名称",
     ["Zuletzt gelesen"] = "最近阅读",
     ["%1 · %2, %3 in Grimmory"] = "%1 · %2，Grimmory 中有 %3 册",
@@ -141,8 +140,6 @@ return {
     ["Bücher einzeln vom Gerät entfernen"] = "从设备逐本移除书籍",
     ["ANZEIGE"] = "显示",
     ["Startbereich"] = "启动页",
-    ["Beim Start von KOReader öffnen"] = "KOReader 启动时打开",
-    ["statt des Dateimanagers"] = "代替文件管理器",
     ["An"] = "开",
     ["Aus"] = "关",
     ["UPDATES"] = "更新",
@@ -158,7 +155,6 @@ return {
     ["Bibliothek aus Grimmory: stöbern, herunterladen und mit KOReader lesen."] =
         "你的 Grimmory 书库：浏览、下载并用 KOReader 阅读。",
     ["Bitte zuerst in den Einstellungen den Server eintragen."] = "请先在设置中填写服务器。",
-    ["Abgleich mit Grimmory …"] = "正在与 Grimmory 同步…",
     ["Abgeglichen: %1, %2."] = "已同步：%1，%2。",
     ["Abgleich fehlgeschlagen: %1"] = "同步失败：%1",
     ["Wird geladen: %1"] = "正在下载：%1",
@@ -224,4 +220,22 @@ return {
     ["Reihe und Band"] = "系列和册次",
     ["Zufall"] = "随机",
     ["Nichts gefunden"] = "未找到内容",
+
+    -- Recently viewed, background sync, end of book
+    ["Zuletzt angesehen"] = "最近查看",
+    ["Angesehen"] = "已查看",
+    ["Statt des Dateimanagers öffnen"] = "代替文件管理器打开",
+    ["beim Start von KOReader und nach jedem Buch"] = "KOReader 启动时及每本书之后",
+    ["Abgleich läuft …"] = "正在同步…",
+    ["Abgleich fehlgeschlagen"] = "同步失败",
+    ["%1 neues Buch"] = { "%1 本新书" },
+    ["gerade abgeglichen"] = "刚刚同步",
+    ["ZU ENDE GELESEN"] = "已读完",
+    ["Als gelesen markieren und an Grimmory melden"] = "标记为已读并告知 Grimmory",
+    ["WEITER IN DER REIHE"] = "本系列下一册",
+    ["Band %1 lesen"] = "阅读第 %1 册",
+    ["Band %1 laden und lesen"] = "下载并阅读第 %1 册",
+    ["Zu Grimmory"] = "前往 Grimmory",
+    ["Im Buch bleiben"] = "留在书中",
+    ["Weitere Möglichkeiten von KOReader"] = "KOReader 的更多选项",
 }

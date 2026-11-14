@@ -43,7 +43,6 @@ return {
     -- Series
     ["Reihe oder Autor suchen"] = "Cari seri atau penulis",
     ["Sortiert:"] = "Urutan:",
-    ["Sortieren"] = "Urutkan",
     ["Name"] = "Nama",
     ["Zuletzt gelesen"] = "Terakhir dibaca",
     ["%1 · %2, %3 in Grimmory"] = "%1 · %2, %3 di Grimmory",
@@ -141,8 +140,6 @@ return {
     ["Bücher einzeln vom Gerät entfernen"] = "hapus buku dari perangkat satu per satu",
     ["ANZEIGE"] = "TAMPILAN",
     ["Startbereich"] = "Bagian awal",
-    ["Beim Start von KOReader öffnen"] = "Buka saat KOReader dimulai",
-    ["statt des Dateimanagers"] = "sebagai ganti pengelola berkas",
     ["An"] = "Aktif",
     ["Aus"] = "Nonaktif",
     ["UPDATES"] = "PEMBARUAN",
@@ -158,7 +155,6 @@ return {
     ["Bibliothek aus Grimmory: stöbern, herunterladen und mit KOReader lesen."] =
         "Pustaka Grimmory Anda: jelajahi, unduh, dan baca dengan KOReader.",
     ["Bitte zuerst in den Einstellungen den Server eintragen."] = "Masukkan server di pengaturan terlebih dahulu.",
-    ["Abgleich mit Grimmory …"] = "Menyinkronkan dengan Grimmory …",
     ["Abgeglichen: %1, %2."] = "Disinkronkan: %1, %2.",
     ["Abgleich fehlgeschlagen: %1"] = "Sinkronisasi gagal: %1",
     ["Wird geladen: %1"] = "Mengunduh: %1",
@@ -224,4 +220,22 @@ return {
     ["Reihe und Band"] = "Seri dan buku",
     ["Zufall"] = "Acak",
     ["Nichts gefunden"] = "Tidak ada hasil",
+
+    -- Recently viewed, background sync, end of book
+    ["Zuletzt angesehen"] = "Terakhir dilihat",
+    ["Angesehen"] = "Dilihat",
+    ["Statt des Dateimanagers öffnen"] = "Buka sebagai ganti pengelola berkas",
+    ["beim Start von KOReader und nach jedem Buch"] = "saat KOReader dimulai dan setelah setiap buku",
+    ["Abgleich läuft …"] = "Menyinkronkan …",
+    ["Abgleich fehlgeschlagen"] = "Sinkronisasi gagal",
+    ["%1 neues Buch"] = { "%1 buku baru" },
+    ["gerade abgeglichen"] = "baru saja disinkronkan",
+    ["ZU ENDE GELESEN"] = "SELESAI DIBACA",
+    ["Als gelesen markieren und an Grimmory melden"] = "Tandai sudah dibaca dan beri tahu Grimmory",
+    ["WEITER IN DER REIHE"] = "BERIKUTNYA DALAM SERI",
+    ["Band %1 lesen"] = "Baca buku %1",
+    ["Band %1 laden und lesen"] = "Unduh dan baca buku %1",
+    ["Zu Grimmory"] = "Ke Grimmory",
+    ["Im Buch bleiben"] = "Tetap di buku",
+    ["Weitere Möglichkeiten von KOReader"] = "Opsi KOReader lainnya",
 }

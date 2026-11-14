@@ -43,7 +43,6 @@ return {
     -- Series
     ["Reihe oder Autor suchen"] = "シリーズ・著者を検索",
     ["Sortiert:"] = "並び順：",
-    ["Sortieren"] = "並べ替え",
     ["Name"] = "名前",
     ["Zuletzt gelesen"] = "最近読んだ順",
     ["%1 · %2, %3 in Grimmory"] = "%1 · %2、Grimmoryに%3冊",
@@ -141,8 +140,6 @@ return {
     ["Bücher einzeln vom Gerät entfernen"] = "本を1冊ずつ端末から削除",
     ["ANZEIGE"] = "表示",
     ["Startbereich"] = "開始画面",
-    ["Beim Start von KOReader öffnen"] = "KOReader起動時に開く",
-    ["statt des Dateimanagers"] = "ファイルマネージャーの代わりに",
     ["An"] = "オン",
     ["Aus"] = "オフ",
     ["UPDATES"] = "アップデート",
@@ -158,7 +155,6 @@ return {
     ["Bibliothek aus Grimmory: stöbern, herunterladen und mit KOReader lesen."] =
         "Grimmoryのライブラリ：見て回り、ダウンロードしてKOReaderで読書。",
     ["Bitte zuerst in den Einstellungen den Server eintragen."] = "先に設定でサーバーを入力してください。",
-    ["Abgleich mit Grimmory …"] = "Grimmoryと同期中…",
     ["Abgeglichen: %1, %2."] = "同期完了：%1、%2。",
     ["Abgleich fehlgeschlagen: %1"] = "同期に失敗：%1",
     ["Wird geladen: %1"] = "ダウンロード中：%1",
@@ -224,4 +220,22 @@ return {
     ["Reihe und Band"] = "シリーズと巻",
     ["Zufall"] = "ランダム",
     ["Nichts gefunden"] = "見つかりません",
+
+    -- Recently viewed, background sync, end of book
+    ["Zuletzt angesehen"] = "最近見た順",
+    ["Angesehen"] = "最近見た",
+    ["Statt des Dateimanagers öffnen"] = "ファイルマネージャーの代わりに開く",
+    ["beim Start von KOReader und nach jedem Buch"] = "KOReader起動時と本を閉じるたびに",
+    ["Abgleich läuft …"] = "同期中…",
+    ["Abgleich fehlgeschlagen"] = "同期に失敗",
+    ["%1 neues Buch"] = { "新着%1冊" },
+    ["gerade abgeglichen"] = "たった今同期",
+    ["ZU ENDE GELESEN"] = "読了",
+    ["Als gelesen markieren und an Grimmory melden"] = "読了にしてGrimmoryに伝える",
+    ["WEITER IN DER REIHE"] = "シリーズの次の巻",
+    ["Band %1 lesen"] = "第%1巻を読む",
+    ["Band %1 laden und lesen"] = "第%1巻をダウンロードして読む",
+    ["Zu Grimmory"] = "Grimmoryへ",
+    ["Im Buch bleiben"] = "本に戻る",
+    ["Weitere Möglichkeiten von KOReader"] = "KOReaderのその他の操作",
 }

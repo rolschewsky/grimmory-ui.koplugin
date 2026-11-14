@@ -43,7 +43,6 @@ return {
     -- Series
     ["Reihe oder Autor suchen"] = "Search series or author",
     ["Sortiert:"] = "Sort:",
-    ["Sortieren"] = "Sort",
     ["Name"] = "Name",
     ["Zuletzt gelesen"] = "Recently read",
     ["%1 · %2, %3 in Grimmory"] = "%1 · %2, %3 in Grimmory",
@@ -142,8 +141,6 @@ return {
     ["Bücher einzeln vom Gerät entfernen"] = "remove books from the device one by one",
     ["ANZEIGE"] = "DISPLAY",
     ["Startbereich"] = "Start section",
-    ["Beim Start von KOReader öffnen"] = "Open when KOReader starts",
-    ["statt des Dateimanagers"] = "instead of the file manager",
     ["An"] = "On",
     ["Aus"] = "Off",
     ["UPDATES"] = "UPDATES",
@@ -159,7 +156,6 @@ return {
     ["Bibliothek aus Grimmory: stöbern, herunterladen und mit KOReader lesen."] =
         "Your Grimmory library: browse, download and read with KOReader.",
     ["Bitte zuerst in den Einstellungen den Server eintragen."] = "Please enter the server in the settings first.",
-    ["Abgleich mit Grimmory …"] = "Syncing with Grimmory …",
     ["Abgeglichen: %1, %2."] = "Synced: %1, %2.",
     ["Abgleich fehlgeschlagen: %1"] = "Sync failed: %1",
     ["Wird geladen: %1"] = "Downloading: %1",
@@ -226,4 +222,22 @@ return {
     ["Reihe und Band"] = "Series and volume",
     ["Zufall"] = "Random",
     ["Nichts gefunden"] = "Nothing found",
+
+    -- Recently viewed, background sync, end of book
+    ["Zuletzt angesehen"] = "Recently viewed",
+    ["Angesehen"] = "Viewed",
+    ["Statt des Dateimanagers öffnen"] = "Open instead of the file manager",
+    ["beim Start von KOReader und nach jedem Buch"] = "when KOReader starts and after every book",
+    ["Abgleich läuft …"] = "Syncing …",
+    ["Abgleich fehlgeschlagen"] = "Sync failed",
+    ["%1 neues Buch"] = { "%1 new book", "%1 new books" },
+    ["gerade abgeglichen"] = "just synced",
+    ["ZU ENDE GELESEN"] = "FINISHED",
+    ["Als gelesen markieren und an Grimmory melden"] = "Mark as read and tell Grimmory",
+    ["WEITER IN DER REIHE"] = "NEXT IN THE SERIES",
+    ["Band %1 lesen"] = "Read book %1",
+    ["Band %1 laden und lesen"] = "Download and read book %1",
+    ["Zu Grimmory"] = "Go to Grimmory",
+    ["Im Buch bleiben"] = "Stay in the book",
+    ["Weitere Möglichkeiten von KOReader"] = "More options from KOReader",
 }

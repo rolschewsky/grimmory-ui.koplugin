@@ -43,7 +43,6 @@ return {
     -- Series
     ["Reihe oder Autor suchen"] = "Buscar serie o autor",
     ["Sortiert:"] = "Orden:",
-    ["Sortieren"] = "Ordenar",
     ["Name"] = "Nombre",
     ["Zuletzt gelesen"] = "Lectura reciente",
     ["%1 · %2, %3 in Grimmory"] = "%1 · %2, %3 en Grimmory",
@@ -143,8 +142,6 @@ return {
     ["Bücher einzeln vom Gerät entfernen"] = "quitar libros del dispositivo uno a uno",
     ["ANZEIGE"] = "PANTALLA",
     ["Startbereich"] = "Pestaña inicial",
-    ["Beim Start von KOReader öffnen"] = "Abrir al iniciar KOReader",
-    ["statt des Dateimanagers"] = "en lugar del gestor de archivos",
     ["An"] = "Activado",
     ["Aus"] = "Desactivado",
     ["UPDATES"] = "ACTUALIZACIONES",
@@ -160,7 +157,6 @@ return {
     ["Bibliothek aus Grimmory: stöbern, herunterladen und mit KOReader lesen."] =
         "Tu biblioteca de Grimmory: explora, descarga y lee con KOReader.",
     ["Bitte zuerst in den Einstellungen den Server eintragen."] = "Introduce primero el servidor en los ajustes.",
-    ["Abgleich mit Grimmory …"] = "Sincronizando con Grimmory…",
     ["Abgeglichen: %1, %2."] = "Sincronizado: %1, %2.",
     ["Abgleich fehlgeschlagen: %1"] = "Error de sincronización: %1",
     ["Wird geladen: %1"] = "Descargando: %1",
@@ -227,4 +223,22 @@ return {
     ["Reihe und Band"] = "Serie y libro",
     ["Zufall"] = "Aleatorio",
     ["Nichts gefunden"] = "Sin resultados",
+
+    -- Recently viewed, background sync, end of book
+    ["Zuletzt angesehen"] = "Vistos recientemente",
+    ["Angesehen"] = "Vistos",
+    ["Statt des Dateimanagers öffnen"] = "Abrir en lugar del gestor de archivos",
+    ["beim Start von KOReader und nach jedem Buch"] = "al iniciar KOReader y después de cada libro",
+    ["Abgleich läuft …"] = "Sincronizando …",
+    ["Abgleich fehlgeschlagen"] = "Error de sincronización",
+    ["%1 neues Buch"] = { "%1 libro nuevo", "%1 libros nuevos" },
+    ["gerade abgeglichen"] = "sincronizado ahora mismo",
+    ["ZU ENDE GELESEN"] = "LIBRO TERMINADO",
+    ["Als gelesen markieren und an Grimmory melden"] = "Marcar como leído y avisar a Grimmory",
+    ["WEITER IN DER REIHE"] = "SIGUIENTE EN LA SERIE",
+    ["Band %1 lesen"] = "Leer el libro %1",
+    ["Band %1 laden und lesen"] = "Descargar y leer el libro %1",
+    ["Zu Grimmory"] = "Ir a Grimmory",
+    ["Im Buch bleiben"] = "Quedarse en el libro",
+    ["Weitere Möglichkeiten von KOReader"] = "Más opciones de KOReader",
 }

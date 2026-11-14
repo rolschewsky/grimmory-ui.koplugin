@@ -43,7 +43,6 @@ return {
     -- Series
     ["Reihe oder Autor suchen"] = "सीरीज़ या लेखक खोजें",
     ["Sortiert:"] = "क्रम:",
-    ["Sortieren"] = "क्रमबद्ध करें",
     ["Name"] = "नाम",
     ["Zuletzt gelesen"] = "हाल में पढ़ी गईं",
     ["%1 · %2, %3 in Grimmory"] = "%1 · %2, Grimmory में %3",
@@ -143,8 +142,6 @@ return {
     ["Bücher einzeln vom Gerät entfernen"] = "डिवाइस से किताबें एक-एक करके हटाएँ",
     ["ANZEIGE"] = "डिस्प्ले",
     ["Startbereich"] = "शुरुआती सेक्शन",
-    ["Beim Start von KOReader öffnen"] = "KOReader शुरू होने पर खोलें",
-    ["statt des Dateimanagers"] = "फ़ाइल मैनेजर की जगह",
     ["An"] = "चालू",
     ["Aus"] = "बंद",
     ["UPDATES"] = "अपडेट",
@@ -160,7 +157,6 @@ return {
     ["Bibliothek aus Grimmory: stöbern, herunterladen und mit KOReader lesen."] =
         "आपकी Grimmory लाइब्रेरी: ब्राउज़ करें, डाउनलोड करें और KOReader में पढ़ें।",
     ["Bitte zuerst in den Einstellungen den Server eintragen."] = "कृपया पहले सेटिंग्स में सर्वर दर्ज करें।",
-    ["Abgleich mit Grimmory …"] = "Grimmory के साथ सिंक हो रहा है …",
     ["Abgeglichen: %1, %2."] = "सिंक हुआ: %1, %2।",
     ["Abgleich fehlgeschlagen: %1"] = "सिंक विफल: %1",
     ["Wird geladen: %1"] = "डाउनलोड हो रहा है: %1",
@@ -227,4 +223,22 @@ return {
     ["Reihe und Band"] = "सीरीज़ और भाग",
     ["Zufall"] = "यादृच्छिक",
     ["Nichts gefunden"] = "कुछ नहीं मिला",
+
+    -- Recently viewed, background sync, end of book
+    ["Zuletzt angesehen"] = "हाल में देखी गईं",
+    ["Angesehen"] = "देखी गईं",
+    ["Statt des Dateimanagers öffnen"] = "फ़ाइल मैनेजर की जगह खोलें",
+    ["beim Start von KOReader und nach jedem Buch"] = "KOReader शुरू होने पर और हर किताब के बाद",
+    ["Abgleich läuft …"] = "सिंक हो रहा है …",
+    ["Abgleich fehlgeschlagen"] = "सिंक विफल",
+    ["%1 neues Buch"] = { "%1 नई किताब", "%1 नई किताबें" },
+    ["gerade abgeglichen"] = "अभी सिंक हुआ",
+    ["ZU ENDE GELESEN"] = "पूरी पढ़ ली",
+    ["Als gelesen markieren und an Grimmory melden"] = "पढ़ी हुई मार्क करें और Grimmory को बताएँ",
+    ["WEITER IN DER REIHE"] = "सीरीज़ में अगली",
+    ["Band %1 lesen"] = "भाग %1 पढ़ें",
+    ["Band %1 laden und lesen"] = "भाग %1 डाउनलोड करके पढ़ें",
+    ["Zu Grimmory"] = "Grimmory पर जाएँ",
+    ["Im Buch bleiben"] = "किताब में रहें",
+    ["Weitere Möglichkeiten von KOReader"] = "KOReader के और विकल्प",
 }

@@ -272,7 +272,7 @@ function Settings:rows()
     local start = UI.TABS[1].label
     for _, tab in ipairs(UI.TABS) do if tab.id == p:setting("start_tab") then start = tab.label end end
     value(_("Startbereich"), start, function() self:chooseStartTab() end)
-    toggle(_("Beim Start von KOReader öffnen"), _("statt des Dateimanagers"), "autostart")
+    toggle(_("Statt des Dateimanagers öffnen"), _("beim Start von KOReader und nach jedem Buch"), "autostart")
 
     section(_("UPDATES"))
     value(_("GitHub-Repo"), p:setting("update_repo"), function()

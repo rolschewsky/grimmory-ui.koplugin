@@ -88,6 +88,23 @@ assert(ids(lib.sortBooks(books, "series")) == "1,2,4,3")   -- Reihe in Bandfolge
 assert(ids(lib.sortBooks(books, "read")) == "2,3,1,4")     -- gelesen zuerst, dann nach Zugang
 assert(ids(lib.sortBooks(books, "random", 7)) == ids(lib.sortBooks(books, "random", 7)))
 assert(#lib.sortBooks(books, "random", 7) == 4 and books[1].id == 1) -- Original bleibt unverändert
+local viewed = { books = { ["4"] = 200, ["3"] = 100 }, series = { ["Lederstrumpf"] = 300 } }
+assert(ids(lib.sortBooks(books, "viewed", nil, viewed)) == "4,3,2,1") -- angesehen zuerst, dann nach Zugang
+assert(ids(lib.sortBooks(books, "viewed")) == "2,3,1,4")
+
+-- Sortierungen der Reihen
+local series = { { seriesName = "Pater Brown", latestAddedOn = "2026-02-01" },
+    { seriesName = "Außergewöhnliche Reisen", latestAddedOn = "2026-03-01" },
+    { seriesName = "Lederstrumpf", latestAddedOn = "2026-04-01" } }
+local function names(list) local t = {} for i, s in ipairs(list) do t[i] = s.seriesName:sub(1, 1) end return table.concat(t) end
+assert(names(lib.sortSeries(series, books, "read")) == "ALP")   -- gelesen zuerst, dann nach Zugang
+assert(names(lib.sortSeries(series, books, "viewed", viewed)) == "LAP") -- Reihe selbst 300, Band 4 zählt 200
+assert(names(lib.sortSeries(series, books, "name")) == "ALP")
+assert(names(series) == "PAL") -- Original bleibt unverändert
+
+-- Nächster Band
+assert(lib.nextInSeries(books, books[2]).id == 4) -- Band 3 fehlt, also Band 4
+assert(lib.nextInSeries(books, books[4]) == nil and lib.nextInSeries(books, books[3]) == nil)
 
 -- Seiten, Zufall, Neuzugänge, Weiterlesen
 local list = {}

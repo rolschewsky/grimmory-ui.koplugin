@@ -246,7 +246,8 @@ end
 
 -- Kopfzeile und Leiste unten -----------------------------------------------------------------
 
---- o: title, subtitle, on_menu (Hamburger links) oder back (Text) + on_back, right (Widget).
+--- o: title, subtitle, highlight (Unterzeile fett, für den Stand des Abgleichs), on_menu
+--- (Hamburger links) oder back (Text) + on_back, right (Widget).
 function UI.header(o)
     local W, H = UI.width(), UI.px(112)
     -- Der Titel steht mittig, links liegt das Menü (112), rechts manchmal ein Knopf.
@@ -254,7 +255,8 @@ function UI.header(o)
     local title = { align = "center",
         UI.text(o.title, 40, { bold = true, serif = true, max_width = max_w }) }
     if o.subtitle then
-        table.insert(title, UI.text(o.subtitle, 22, { color = UI.GRAY, max_width = max_w }))
+        table.insert(title, UI.text(o.subtitle, 22, { color = o.highlight and UI.BLACK or UI.GRAY,
+            bold = o.highlight, max_width = max_w }))
     end
     local left
     if o.on_menu then

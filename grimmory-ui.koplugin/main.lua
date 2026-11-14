@@ -15,10 +15,12 @@ local Device = require("device")
 local Dispatcher = require("dispatcher")
 local DocSettings = require("docsettings")
 local InfoMessage = require("ui/widget/infomessage")
+local JSON = require("json")
 local LuaSettings = require("luasettings")
 local NetworkMgr = require("ui/network/manager")
 local UIManager = require("ui/uimanager")
 local WidgetContainer = require("ui/widget/container/widgetcontainer")
+local ffiutil = require("ffi/util")
 local lfs = require("libs/libkoreader-lfs")
 local logger = require("logger")
 local util = require("util")
@@ -46,6 +48,7 @@ local DEFAULTS = {
     update_repo = "rolschewsky/grimmory-ui.koplugin",
     regal_sort = "random", -- regal_genre und language haben keine Vorgabe
     search_sort = "random",
+    reihen_sort = "read",
 }
 
 -- Zustand über alle Dateimanager-Instanzen hinweg. KOReader legt das Plugin für jeden Dateimanager
@@ -72,6 +75,13 @@ local function adoptOldNames(settings_file, data_dir)
     logger.info("Grimmory: Einstellungen und Daten von „grimmory“ übernommen")
 end
 
+--- Grimmory oben auf die erste Seite der Werkzeuge, im Dateimanager wie im Buch. Eine eigene
+--- Menüordnung des Nutzers geht vor.
+local function putFirstInTools(order_module)
+    local order = require(order_module)
+    if order.tools and order.tools[1] ~= "grimmory_ui" then table.insert(order.tools, 1, "grimmory_ui") end
+end
+
 local Grimmory = WidgetContainer:extend{
     name = NAME,
     is_doc_only = false,
@@ -84,11 +94,21 @@ function Grimmory:init()
     self.settings = LuaSettings:open(settings_file)
     util.makePath(self.dir .. "/thumbs")
     self.data = library.load(self.dir)
-    self.data.details = self.data.details or {}
     self:onDispatcherRegisterActions()
+    putFirstInTools(self.ui.document and "ui/elements/reader_menu_order" or "ui/elements/filemanager_menu_order")
     self.ui.menu:registerToMainMenu(self)
 
-    if not self.ui.document then
+    if self.ui.document then
+        local book = self:bookForFile(self.ui.document.file)
+        session.last_book = book and book.id
+        -- Ersetzt das Plugin den Dateimanager, kommt es nach jedem Buch wieder, sonst nach Büchern
+        -- aus Grimmory.
+        session.reopen = self:setting("autostart") or book ~= nil
+        if book then
+            self:markViewed("books", book.id)
+            self:hookEndOfBook(book)
+        end
+    else
         local first_start = not session.started
         session.started = true
         local back_from_reader = session.reopen
@@ -184,6 +204,27 @@ function Grimmory:localFile(book)
     return nil
 end
 
+--- Das Buch aus Grimmory, das als `file` auf dem Gerät liegt, sonst nil.
+function Grimmory:bookForFile(file)
+    local want = ffiutil.realpath(file) or file
+    for id, path in pairs(self.data.files) do
+        if (ffiutil.realpath(path) or path) == want then
+            for _, book in ipairs(self.data.books) do
+                if tostring(book.id) == id then return book end
+            end
+        end
+    end
+    return nil
+end
+
+--- Merkt sich, wann ein Buch ("books", id) oder eine Reihe ("series", Name) zuletzt angesehen
+--- wurde. Das bleibt auf dem Gerät.
+function Grimmory:markViewed(kind, key)
+    self.data.viewed[kind] = self.data.viewed[kind] or {}
+    self.data.viewed[kind][tostring(key)] = os.time()
+    self:save()
+end
+
 --- Lesestand: "read", "reading" oder "unread" und Prozent. Der Stand in KOReader geht vor.
 function Grimmory:state(book)
     local file = self:localFile(book)
@@ -238,48 +279,107 @@ end
 
 -- Abgleich -----------------------------------------------------------------------------------
 
+--- Abgleich in einem eigenen Prozess, die Oberfläche bleibt bedienbar und zeigt den Stand in der
+--- Kopfzeile. Der Prozess schreibt die Bibliothek nach sync/library.json und meldet Ergebnis und
+--- neue Tokens über eine Pipe. `silent`: Fehler nur in der Kopfzeile, nie als Meldung.
 function Grimmory:sync(silent, on_done)
     if not self:isConfigured() then
         UIManager:show(InfoMessage:new{ text = _("Bitte zuerst in den Einstellungen den Server eintragen.") })
         return
     end
-    NetworkMgr:runWhenConnected(function()
-        local info = InfoMessage:new{ text = _("Abgleich mit Grimmory …") }
-        UIManager:show(info)
-        UIManager:forceRePaint()
+    if self.sync_pid then return end
+    local function start()
+        local out = self.dir .. "/sync"
+        util.makePath(out)
         local client = self:client()
-        local result, err
-        local formats = self:setting("formats")
-        if self:setting("prefetch_covers") then
-            result, err = library.sync(client, self.dir, self.data, formats)
-        else
-            result, err = library.sync({
+        local formats, covers = self:setting("formats"), self:setting("prefetch_covers")
+        local pid, fd = ffiutil.runInSubProcess(function(_, write_fd)
+            local tokens
+            client.on_tokens = function(t) tokens = t end
+            local source = covers and client or {
                 books = function() return client:books() end,
                 series = function() return client:series() end,
                 thumbnail = function() return false end,
-            }, self.dir, self.data, formats)
-        end
-        if result then
-            self:pushReadStates()
-            self:removeOldReads()
-            self:save()
-        end
-        UIManager:close(info)
-        if result then
-            if not silent then
-                UIManager:show(InfoMessage:new{ timeout = 3, text = T(_("Abgeglichen: %1, %2."),
-                    T(N_("%1 Buch", "%1 Bücher", result.books), result.books),
-                    T(N_("%1 Reihe", "%1 Reihen", result.series), result.series)) })
+            }
+            local result, err = library.sync(source, self.dir, self.data, formats)
+            if result then
+                pcall(self.pushReadStates, self)
+                if not library.save(out, self.data) then result, err = nil, "sync/library.json" end
             end
-            if self.app then
-                self.app:reroll()
-                self.app:render()
-            end
-        else
-            UIManager:show(InfoMessage:new{ text = T(_("Abgleich fehlgeschlagen: %1"), api.describe(err)) })
+            ffiutil.writeToFD(write_fd, JSON.encode{ result = result, tokens = tokens,
+                error = not result and api.describe(err) or nil }, true)
+        end, true)
+        if not pid then
+            self:finishSync({ error = tostring(fd) }, silent, on_done)
+            return
         end
-        if on_done then on_done(result ~= nil) end
-    end)
+        self.sync_pid, self.sync_status = pid, { running = true }
+        self:redraw()
+        local waited = 0
+        local function poll()
+            if not ffiutil.isSubProcessDone(pid) then
+                waited = waited + 1
+                if waited < 900 then UIManager:scheduleIn(1, poll); return end
+                ffiutil.terminateSubProcess(pid) -- ponytail: fest 15 Minuten, die Timeouts der Requests greifen früher
+            end
+            local ok, msg = pcall(JSON.decode, ffiutil.readAllFromFD(fd))
+            self.sync_pid = nil
+            self:finishSync(ok and type(msg) == "table" and msg or {}, silent, on_done)
+        end
+        UIManager:scheduleIn(1, poll)
+    end
+    if silent then start() else NetworkMgr:runWhenConnected(start) end
+end
+
+--- Ergebnis des Abgleichs übernehmen. Übernommen wird nur, was ein Abgleich erneuert, auf die
+--- library.json von der Platte: Downloads und Angesehenes von währenddessen bleiben so erhalten.
+function Grimmory:finishSync(msg, silent, on_done)
+    if type(msg.tokens) == "table" then
+        self.settings:saveSetting("tokens", msg.tokens)
+        self.settings:flush()
+        if self._client then self._client.tokens = msg.tokens end
+    end
+    local fresh = msg.result and library.load(self.dir .. "/sync")
+    os.remove(self.dir .. "/sync/library.json")
+    if fresh and fresh.synced_at then
+        local data = library.load(self.dir)
+        local known, new = {}, 0
+        for _, b in ipairs(data.books) do known[b.id] = true end
+        for _, b in ipairs(fresh.books) do if not known[b.id] then new = new + 1 end end
+        local was_empty = #data.books == 0
+        for _, key in ipairs(library.SYNCED) do data[key] = fresh[key] end
+        self.data = data
+        self:removeOldReads()
+        self:save()
+        self.sync_status = { new = was_empty and 0 or new }
+        if not silent then
+            UIManager:show(InfoMessage:new{ timeout = 3, text = T(_("Abgeglichen: %1, %2."),
+                T(N_("%1 Buch", "%1 Bücher", #data.books), #data.books),
+                T(N_("%1 Reihe", "%1 Reihen", #data.series), #data.series)) })
+        end
+        if self.app and was_empty then self.app:reroll() end
+    else
+        self.sync_status = { error = msg.error or api.describe(nil) }
+        if not silent then
+            UIManager:show(InfoMessage:new{ text = T(_("Abgleich fehlgeschlagen: %1"), self.sync_status.error) })
+        end
+    end
+    self:redraw()
+    if on_done then on_done(fresh ~= nil) end
+end
+
+--- Stand des Abgleichs für die Kopfzeile, nil, wenn es nichts Neues gibt.
+function Grimmory:syncStatus()
+    local s = self.sync_status
+    if not s then return nil end
+    if s.running then return _("Abgleich läuft …") end
+    if s.error then return _("Abgleich fehlgeschlagen") end -- den Grund zeigt das Symbol daneben
+    if s.new > 0 then return T(N_("%1 neues Buch", "%1 neue Bücher", s.new), s.new) .. " · " .. _("gerade abgeglichen") end
+    return nil
+end
+
+function Grimmory:redraw()
+    if self.app then self.app:render("ui") end
 end
 
 --- Abgleich beim Öffnen, wenn der letzte länger her ist und das WLAN schon an ist. on_done läuft
@@ -400,7 +500,7 @@ function Grimmory:downloadAndOpen(book)
         local path, err = self:download(book)
         UIManager:close(info)
         if path then
-            self:openFile(path, book)
+            self:openFile(path)
         else
             UIManager:show(InfoMessage:new{ text = T(_("Laden fehlgeschlagen: %1"), err) })
         end
@@ -449,15 +549,48 @@ function Grimmory:markRead(book, read)
     self:save()
 end
 
-function Grimmory:openFile(file, book)
-    session.reopen = true
-    session.last_book = book and book.id
+--- Öffnet `file` im Reader. Was nach dem Lesen kommt, legt die Instanz im Reader fest (init).
+function Grimmory:openFile(file)
     self:closeApp()
     if self.ui.document then
         self.ui:switchDocument(file)
     else
         self.ui:openFile(file)
     end
+end
+
+--- Liegt das Buch auf dem Gerät, öffnen, sonst erst laden.
+function Grimmory:read(book)
+    local file = self:localFile(book)
+    if file then self:openFile(file) else self:downloadAndOpen(book) end
+end
+
+-- Buchende -----------------------------------------------------------------------------------
+
+--- Am Ende eines Buchs aus Grimmory kommt der eigene Dialog statt der Frage von KOReader. Wer in
+--- KOReader eine andere Aktion für das Buchende gewählt hat, behält sie.
+function Grimmory:hookEndOfBook(book)
+    local status = self.ui.status
+    if not status then return end
+    local koreader = status.onEndOfBook
+    status.onEndOfBook = function(s)
+        if (G_reader_settings:readSetting("end_document_action") or "pop-up") ~= "pop-up" then return koreader(s) end
+        if (UIManager:getTopmostVisibleWidget() or {}).name == "end_document" then return end
+        UIManager:show(require("grimmoryui/bookend"):new{
+            plugin = self, book = book, koreader = function() koreader(s) end,
+        })
+    end
+end
+
+--- Das offene Buch als gelesen markieren. Grimmory erfährt es, sobald man ins Plugin zurückkommt.
+function Grimmory:markFinished(book)
+    self.ui.status:markBook(true)
+    self:countFinished(book.id)
+end
+
+--- Buch schließen. Der Dateimanager, der dann kommt, öffnet das Plugin (session.reopen).
+function Grimmory:leaveBook()
+    UIManager:nextTick(function() self.ui.status:openFileBrowser() end)
 end
 
 -- Fenster ------------------------------------------------------------------------------------

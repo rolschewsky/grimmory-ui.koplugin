@@ -6,13 +6,13 @@ Geblättert wird mit den Pfeilen oben, mit Wischen nach links oder rechts oder m
 Die Zurück-Taste schließt eine Detailseite, auf einer Bereichsseite das ganze Fenster.
 ]]
 
-local ButtonDialog = require("ui/widget/buttondialog")
 local ConfirmBox = require("ui/widget/confirmbox")
 local Device = require("device")
 local FrameContainer = require("ui/widget/container/framecontainer")
 local Geom = require("ui/geometry")
 local GestureRange = require("ui/gesturerange")
 local HorizontalGroup = require("ui/widget/horizontalgroup")
+local InfoMessage = require("ui/widget/infomessage")
 local InputContainer = require("ui/widget/container/inputcontainer")
 local InputDialog = require("ui/widget/inputdialog")
 local OverlapGroup = require("ui/widget/overlapgroup")
@@ -70,6 +70,32 @@ local function countRead(states)
     return n
 end
 
+-- Sortierungen: label für die Auswahl, short für den knappen Knopf im Regal.
+local REGAL_SORTS = {
+    { value = "added", label = _("Zuletzt hinzugefügt"), short = _("Neueste") },
+    { value = "title", label = _("Titel"), short = _("Titel") },
+    { value = "author", label = _("Autor"), short = _("Autor") },
+    { value = "series", label = _("Reihe und Band"), short = _("Reihe") },
+    { value = "read", label = _("Zuletzt gelesen"), short = _("Zuletzt gelesen") },
+    { value = "viewed", label = _("Zuletzt angesehen"), short = _("Angesehen") },
+    { value = "random", label = _("Zufall"), short = _("Zufall") },
+}
+
+--- Die Suche sortiert wie das Regal und dazu nach Größe, für „Auf dem Gerät“.
+local SEARCH_SORTS = { unpack(REGAL_SORTS) }
+table.insert(SEARCH_SORTS, { value = "size", label = _("Größe") })
+
+local REIHEN_SORTS = {
+    { value = "read", label = _("Zuletzt gelesen") },
+    { value = "viewed", label = _("Zuletzt angesehen") },
+    { value = "name", label = _("Name") },
+}
+
+local function sortLabel(sorts, value, field)
+    for _, s in ipairs(sorts) do if s.value == value then return s[field] end end
+    return sorts[1][field]
+end
+
 --- Überlagerung, bei der die obere Ebene Eingaben zuerst bekommt. OverlapGroup fragt sonst die
 --- untere zuerst, und ein Tippen auf das Bewertungs-Kästchen öffnete das Cover darunter.
 local TopFirst = OverlapGroup:extend{}
@@ -96,7 +122,7 @@ function App:init()
     self.page = {}
     self.search_query = ""
     self.search_sort = self.plugin:setting("search_sort")
-    self.reihen_sort = "read"
+    self.reihen_sort = self.plugin:setting("reihen_sort")
     self.regal_genre = self.plugin:setting("regal_genre")
     self.regal_sort = self.plugin:setting("regal_sort")
     self.shuffle_seed = os.time()
@@ -111,7 +137,7 @@ function App:state(book)
 end
 
 function App:subtitle(prefix)
-    local synced = self.plugin:syncedLabel()
+    local synced = self.plugin:syncStatus() or self.plugin:syncedLabel()
     if prefix then return prefix .. " · " .. synced end
     return synced
 end
@@ -159,6 +185,7 @@ function App:render(refresh)
             regal = self.screenRegal, suche = self.screenSuche })[self.tab] or self.screenStart
         head, body = fn(self, body_h)
     end
+    if head then self:syncHead(head) end
     header = header or UI.header(head)
     local content = VerticalGroup:new{
         align = "left",
@@ -184,6 +211,21 @@ function App:render(refresh)
     UIManager:setDirty(self, refresh or "flashui")
 end
 
+--- Stand des Abgleichs in der Kopfzeile: Unterzeile fett, rechts ein Symbol, solange er läuft,
+--- und eine Warnung nach einem Fehler, die beim Antippen den Grund zeigt.
+function App:syncHead(head)
+    local status = self.plugin.sync_status
+    head.highlight = self.plugin:syncStatus() ~= nil
+    if not status then return end
+    if status.running then
+        head.right = UI.box(UI.icon("cre.render.reload", 44), UI.px(112), UI.px(112), { border = 0 })
+    elseif status.error then
+        head.right = UI.tap(UI.box(UI.icon("notice-warning", 48), UI.px(112), UI.px(112), { border = 0 }), function()
+            UIManager:show(InfoMessage:new{ text = T(_("Abgleich fehlgeschlagen: %1"), status.error) })
+        end)
+    end
+end
+
 --- Bitte um einen Stern zeigen. Das Kästchen bleibt, bis es beantwortet ist.
 function App:showRating()
     self.rating_box = true
@@ -198,6 +240,8 @@ function App:answerRating(choice)
 end
 
 function App:setTab(id)
+    local status = self.plugin.sync_status
+    if status and status.new then self.plugin.sync_status = nil end -- „3 neue Bücher“ gilt bis zum nächsten Bereich
     self.tab = id
     self.stack = {}
     self:render()
@@ -260,6 +304,7 @@ end
 -- Gemeinsame Teile ---------------------------------------------------------------------------
 
 function App:openBook(book)
+    self.plugin:markViewed("books", book.id)
     self.plugin:fetchDetail(book)
     self:push({ kind = "book", id = book.id, title = book.title })
 end
@@ -279,6 +324,7 @@ function App:fetchLater(book)
 end
 
 function App:openSeries(name)
+    self.plugin:markViewed("series", name)
     self:push({ kind = "series", name = name, title = name })
 end
 
@@ -368,19 +414,6 @@ function App:searchField(placeholder, value, on_change)
     end), 24, 0)
 end
 
-function App:choose(title, options, on_pick)
-    local dialog
-    local rows = {}
-    for _, opt in ipairs(options) do
-        table.insert(rows, { { text = opt.label, callback = function()
-            UIManager:close(dialog)
-            on_pick(opt.value)
-        end } })
-    end
-    dialog = ButtonDialog:new{ title = title, buttons = rows, rows_per_page = 8 }
-    UIManager:show(dialog)
-end
-
 -- Start --------------------------------------------------------------------------------------
 
 --- Gruß nach Tageszeit statt eines festen Titels.
@@ -394,6 +427,8 @@ end
 
 --- „grimmory.example.com · letzter Abgleich vor 2 Min.“: nur der Hostname, ohne Schema und Port.
 function App:startSubtitle()
+    local status = self.plugin:syncStatus()
+    if status then return status end
     local host = self.plugin:setting("server"):match("^%a+://([^/:]+)")
     local ago = self.plugin:syncedAgo()
     local synced = ago and T(_("letzter Abgleich %1"), ago) or _("noch nicht abgeglichen")
@@ -452,7 +487,7 @@ function App:continueBlock(book)
         UI.padded(row, 32, 32), UI.line(UI.width(), UI.px(2)),
     }, function()
         local file = self.plugin:localFile(book)
-        if file then self.plugin:openFile(file, book) else self:openBook(book) end
+        if file then self.plugin:openFile(file) else self:openBook(book) end
     end)
 end
 
@@ -472,22 +507,7 @@ function App:sortedSeries()
         local hit = query == "" or #lib.search({ { title = s.seriesName, authors = s.authors } }, query) > 0
         if hit then table.insert(list, s) end
     end
-    if self.reihen_sort == "name" then
-        table.sort(list, function(a, b) return (a.seriesName or "") < (b.seriesName or "") end)
-    else
-        local last = {}
-        for _, b in ipairs(self:data().books) do
-            if b.seriesName and (b.lastReadTime or "") > (last[b.seriesName] or "") then
-                last[b.seriesName] = b.lastReadTime
-            end
-        end
-        table.sort(list, function(a, b)
-            local la, lb = last[a.seriesName] or "", last[b.seriesName] or ""
-            if la ~= lb then return la > lb end
-            return (a.latestAddedOn or "") > (b.latestAddedOn or "")
-        end)
-    end
-    return list
+    return lib.sortSeries(list, self:data().books, self.reihen_sort, self:data().viewed)
 end
 
 function App:screenReihen(h)
@@ -503,9 +523,8 @@ function App:screenReihen(h)
     local fixed = search:getSize().h + UI.px(104) + UI.px(2)
     local per_page = math.max(1, math.floor((h - fixed) / row_h))
     local slice, pages = lib.paginate(self:sortedSeries(), self:getPage(), per_page)
-    local sort = UI.dropdown(_("Sortiert:"), self.reihen_sort == "name" and _("Name") or _("Zuletzt gelesen"), function()
-        self:choose(_("Sortieren"), { { label = _("Zuletzt gelesen"), value = "read" }, { label = _("Name"), value = "name" } },
-            function(v) self.reihen_sort = v; self:resetPage(); self:render() end)
+    local sort = UI.dropdown(_("Sortiert:"), sortLabel(REIHEN_SORTS, self.reihen_sort, "label"), function()
+        self:pickSort("reihen_sort", REIHEN_SORTS)
     end)
     local parts = { align = "left", search,
         UI.padded(UI.spread(sort, self:pager(pages), innerWidth()), 16, 16), UI.line(UI.width(), UI.px(2)) }
@@ -684,24 +703,6 @@ end
 
 -- Regal --------------------------------------------------------------------------------------
 
-local REGAL_SORTS = {
-    { value = "added", label = _("Zuletzt hinzugefügt"), short = _("Neueste") },
-    { value = "title", label = _("Titel"), short = _("Titel") },
-    { value = "author", label = _("Autor"), short = _("Autor") },
-    { value = "series", label = _("Reihe und Band"), short = _("Reihe") },
-    { value = "read", label = _("Zuletzt gelesen"), short = _("Zuletzt gelesen") },
-    { value = "random", label = _("Zufall"), short = _("Zufall") },
-}
-
---- Die Suche sortiert wie das Regal und dazu nach Größe, für „Auf dem Gerät“.
-local SEARCH_SORTS = { unpack(REGAL_SORTS) }
-table.insert(SEARCH_SORTS, { value = "size", label = _("Größe") })
-
-local function sortLabel(sorts, value, field)
-    for _, s in ipairs(sorts) do if s.value == value then return s[field] end end
-    return sorts[1][field]
-end
-
 --- Das gewählte Genre, solange es im Regal noch Bücher hat. Sonst gilt „Alle Genres“, die Wahl
 --- bleibt aber gespeichert und greift wieder, sobald das Genre zurück ist.
 function App:regalGenre()
@@ -715,7 +716,7 @@ function App:screenRegal(h)
     local head = { title = _("Regal"), subtitle = self:subtitle(count(#data.books, "%1 Buch", "%1 Bücher")),
         on_menu = function() self.plugin:showMenu() end }
     local genre_name = self:regalGenre()
-    local books = lib.sortBooks(lib.byGenre(data.books, genre_name), self.regal_sort, self.shuffle_seed)
+    local books = lib.sortBooks(lib.byGenre(data.books, genre_name), self.regal_sort, self.shuffle_seed, data.viewed)
     local sort_content = HorizontalGroup:new{ align = "center",
         UI.text(sortLabel(REGAL_SORTS, self.regal_sort, "short"), 24, { bold = true, max_width = UI.px(170) }),
         UI.hspan(10), UI.icon("control.expand", 28) }
@@ -768,8 +769,8 @@ function App:pickGenre()
     })
 end
 
---- Sortierung von Regal oder Suche wählen, `key` ist regal_sort oder search_sort. „Zufall“ mischt
---- bei jeder Wahl neu.
+--- Sortierung wählen, `key` ist regal_sort, search_sort oder reihen_sort. „Zufall“ mischt bei
+--- jeder Wahl neu.
 function App:pickSort(key, sorts)
     local items = {}
     for _, s in ipairs(sorts) do
@@ -808,7 +809,7 @@ function App:searchResults()
         end
         if keep then table.insert(list, b) end
     end
-    return lib.sortBooks(list, self.search_sort, self.shuffle_seed + 1) -- anders gemischt als das Regal
+    return lib.sortBooks(list, self.search_sort, self.shuffle_seed + 1, self:data().viewed) -- anders gemischt als das Regal
 end
 
 function App:screenSuche(h)
@@ -936,7 +937,7 @@ function App:screenBook(h, screen)
         UI.cover(self.plugin:thumbPath(b), UI.px(320), UI.coverHeight(UI.px(320)), b.title), UI.hspan(44), VerticalGroup:new(col) }
 
     local primary = file
-        and UI.button(_("Lesen"), function() self.plugin:openFile(file, b) end,
+        and UI.button(_("Lesen"), function() self.plugin:openFile(file) end,
             { primary = true, width = innerWidth(), height = UI.px(112), size = 32 })
         or UI.button(T(_("Herunterladen und lesen · %1"), lib.formatSize(b.fileSizeKb)),
             function() self.plugin:downloadAndOpen(b) end,

@@ -24,9 +24,14 @@ end
 
 -- Speicher ---------------------------------------------------------------------------------------
 
+--- viewed merkt sich nur auf dem Gerät, wann ein Buch oder eine Reihe zuletzt angesehen wurde:
+--- { books = { ["<id>"] = Zeit }, series = { ["<Name>"] = Zeit } }.
 function M.empty()
-    return { books = {}, series = {}, thumbs = {}, files = {}, synced_at = nil }
+    return { books = {}, series = {}, thumbs = {}, files = {}, details = {}, viewed = {}, synced_at = nil }
 end
+
+--- Was ein Abgleich erneuert. Alles andere in library.json gehört dem Gerät.
+M.SYNCED = { "books", "series", "thumbs", "formats", "synced_at" }
 
 function M.load(dir)
     local fh = io.open(dir .. "/library.json", "r")
@@ -310,13 +315,18 @@ local function shuffleRank(book, seed)
 end
 
 --- Bücher sortiert: added (zuletzt hinzugefügt), title, author (Nachname), series (Reihen in
---- Bandfolge, Einzelbände nach Titel dazwischen), read (zuletzt gelesen), size (größte zuerst)
---- oder random (mit `seed`).
-function M.sortBooks(books, mode, seed)
+--- Bandfolge, Einzelbände nach Titel dazwischen), read (zuletzt gelesen), viewed (zuletzt
+--- angesehen laut `viewed`, siehe M.empty), size (größte zuerst) oder random (mit `seed`).
+function M.sortBooks(books, mode, seed, viewed)
     local list = {}
     for i, b in ipairs(books) do list[i] = b end
     local function title(b) return lower(b.title or "") end
     local function byTitle(a, b) return title(a) < title(b) end
+    local function newest(a, b)
+        local da, db = a.addedOn or "", b.addedOn or ""
+        if da ~= db then return da > db end
+        return byTitle(a, b)
+    end
     local cmp
     if mode == "title" then
         cmp = byTitle
@@ -343,6 +353,13 @@ function M.sortBooks(books, mode, seed)
             if ra ~= rb then return ra > rb end
             return (a.addedOn or "") > (b.addedOn or "")
         end
+    elseif mode == "viewed" then
+        local seen = (viewed or {}).books or {}
+        cmp = function(a, b)
+            local va, vb = seen[tostring(a.id)] or 0, seen[tostring(b.id)] or 0
+            if va ~= vb then return va > vb end
+            return newest(a, b)
+        end
     elseif mode == "size" then
         cmp = function(a, b)
             local sa, sb = tonumber(a.fileSizeKb) or 0, tonumber(b.fileSizeKb) or 0
@@ -356,14 +373,57 @@ function M.sortBooks(books, mode, seed)
             return tostring(a.id) < tostring(b.id)
         end
     else
-        cmp = function(a, b)
-            local da, db = a.addedOn or "", b.addedOn or ""
-            if da ~= db then return da > db end
-            return byTitle(a, b)
-        end
+        cmp = newest
     end
     table.sort(list, cmp)
     return list
+end
+
+--- Reihen sortiert: read (zuletzt gelesen), viewed (zuletzt angesehen, ein angesehenes Buch zählt
+--- für seine Reihe) oder name. Reihen ohne Treffer folgen, die zuletzt ergänzte zuerst.
+function M.sortSeries(series, books, mode, viewed)
+    local list = {}
+    for i, s in ipairs(series) do list[i] = s end
+    if mode == "name" then
+        table.sort(list, function(a, b) return (a.seriesName or "") < (b.seriesName or "") end)
+        return list
+    end
+    local last, none = {}, ""
+    if mode == "viewed" then
+        viewed, none = viewed or {}, 0
+        for name, t in pairs(viewed.series or {}) do last[name] = t end
+        local seen = viewed.books or {}
+        for _, b in ipairs(books) do
+            local t = seen[tostring(b.id)]
+            if b.seriesName and t and t > (last[b.seriesName] or 0) then last[b.seriesName] = t end
+        end
+    else
+        for _, b in ipairs(books) do
+            if b.seriesName and (b.lastReadTime or "") > (last[b.seriesName] or "") then
+                last[b.seriesName] = b.lastReadTime
+            end
+        end
+    end
+    table.sort(list, function(a, b)
+        local la, lb = last[a.seriesName] or none, last[b.seriesName] or none
+        if la ~= lb then return la > lb end
+        return (a.latestAddedOn or "") > (b.latestAddedOn or "")
+    end)
+    return list
+end
+
+--- Der nächste Band derselben Reihe in der Bibliothek, nil ohne.
+function M.nextInSeries(books, book)
+    local n = tonumber(book.seriesNumber)
+    if not (book.seriesName and n) then return nil end
+    local best, best_n
+    for _, b in ipairs(books) do
+        local bn = tonumber(b.seriesNumber)
+        if b.seriesName == book.seriesName and bn and bn > n and (not best_n or bn < best_n) then
+            best, best_n = b, bn
+        end
+    end
+    return best
 end
 
 --- Das Buch, an dem zuletzt gelesen wurde und das noch nicht fertig ist.
